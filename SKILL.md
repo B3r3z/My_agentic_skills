@@ -119,4 +119,3 @@ review of the corrected final diff. Finish only when both axes pass, or report a
 specific blocker and the still-open plan items.
 
 Preserve unrelated working-tree and staging changes throughout the workflow.
-
