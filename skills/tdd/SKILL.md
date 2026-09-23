@@ -11,6 +11,6 @@ For new behavior or a reproduced bug, write a focused test, observe it fail for 
 
 Test observable contracts at an appropriate public boundary. Expected results must come from the specification or independently worked examples, not a copy of implementation logic. Prefer tests that survive internal restructuring. Existing working behavior may pass on its first characterization test; never break production code to manufacture a red step.
 
-Consult [tests.md](tests.md) when choosing assertions or test boundaries, and [mocking.md](mocking.md) when deciding how to control dependencies. Use `codebase-design` only if interface design itself needs work. Domain documentation is relevant when it resolves behavior or terminology, not a prerequisite to every cycle.
+Use `codebase-design` only if interface design itself needs work. Domain documentation is relevant when it resolves behavior or terminology, not a prerequisite to every cycle.
 
 Run checks relevant to the changes and required repository checks. Repeat or broaden verification after further changes, failures, or incomplete evidence; avoid redundant runs for unchanged code. Finish with implemented behavior, verification evidence, and any unmet criteria.

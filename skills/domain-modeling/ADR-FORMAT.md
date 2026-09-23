@@ -1,6 +1,8 @@
 # ADR Format
 
-Use the ADR directory configured in `AGENTS.md` or the context map for the decision's scope. System-wide decisions default to root `docs/adr/`; context-specific decisions use that context's ADR directory (for example `src/ordering/docs/adr/`). Number files sequentially within the selected directory: `0001-slug.md`, `0002-slug.md`, etc.
+Preserve the project's existing ADR template, metadata, naming, and numbering. Use the defaults below only where no convention exists.
+
+Use the ADR directory configured in `AGENTS.md` or the context map for the decision's scope. System-wide decisions default to root `docs/adr/`; context-specific decisions use that context's ADR directory (for example `src/ordering/docs/adr/`). Default file names are `0001-slug.md`, `0002-slug.md`, etc.
 
 Create the selected ADR directory lazily, only when its first agreed decision is recorded.
 
@@ -16,7 +18,7 @@ That's it. An ADR can be a single paragraph. The value is in recording *that* a 
 
 ## Optional sections
 
-Only include these when they add genuine value. Most ADRs won't need them.
+When no project template applies, include these only when useful.
 
 - **Status** frontmatter (`proposed | accepted | deprecated | superseded by ADR-NNNN`): useful when decisions are revisited
 - **Considered Options**: only when the rejected alternatives are worth remembering
@@ -24,17 +26,17 @@ Only include these when they add genuine value. Most ADRs won't need them.
 
 ## Numbering
 
-Scan the selected ADR directory for the highest existing number and increment by one. Check that the target filename is unused before writing; do not borrow numbering from a different context or overwrite an existing ADR.
+When using sequential numbering, scan the selected ADR directory for the highest existing number and increment by one. Check that the target filename is unused before writing; do not borrow numbering from a different context or overwrite an existing ADR.
 
 ## When to offer an ADR
 
-All three of these must be true:
+For unsolicited suggestions, consider these signals rather than requiring all three:
 
 1. **Hard to reverse**: the cost of changing your mind later is meaningful
 2. **Surprising without context**: a future reader will look at the code and wonder "why on earth did they do it this way?"
 3. **The result of a real trade-off**: there were genuine alternatives and you picked one for specific reasons
 
-If a decision is easy to reverse, skip it: you'll just reverse it. If it's not surprising, nobody will wonder why. If there was no real alternative, there's nothing to record beyond "we did the obvious thing."
+Suggest an ADR when preserving the reasoning will help future changes; skip routine choices with no useful context to retain. An explicit request to document a decision does not need to satisfy these signals.
 
 ### What qualifies
 

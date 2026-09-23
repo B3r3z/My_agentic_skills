@@ -15,6 +15,16 @@ Personal skills collection for Codex and other compatible coding agents.
 
 Included dependencies: `grilling`, `domain-modeling`, and `codebase-design`.
 
+When installing individual skills, include the dependencies needed for your workflow:
+
+| Skill | Required dependencies | Optional dependencies |
+| --- | --- | --- |
+| `grill-with-docs` | `grilling`; `domain-modeling` when recording docs | None |
+| `orbit-forge` | `code-review` for final review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
+| `tdd` | None | `codebase-design` when interface design needs work |
+
+Other skills have no required skill dependencies. Keep each installed skill's supporting files.
+
 `orbit-forge` executes an approved plan or ticket set sequentially using Luna MAX / Sol HIGH and an independent Sol HIGH review. It reuses the source requirements, records execution state locally, and waits for agent events instead of repeatedly polling progress. Waiting and state-location overrides belong in `AGENTS.md`.
 
 ## Installation

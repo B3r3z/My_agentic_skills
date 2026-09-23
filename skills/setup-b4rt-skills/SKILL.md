@@ -13,9 +13,9 @@ Record the settings actually needed:
 
 - Local task directory: default `.scratch/<feature-slug>/issues/`. `to-tickets` always operates locally, even if another workflow uses a remote tracker.
 - Tracker provider and explicit target only for workflows that use one. A Git remote is evidence, not an instruction to enable external publishing.
-- Labels: `none` unless an established/requested workflow needs mappings.
+- Labels: `none` unless an established/requested workflow needs mappings; record only those mappings and their meanings. Verify remote labels before applying them and create missing labels only when authorized.
 - Relevant domain paths: default `CONTEXT.md` and `docs/adr/`, or the existing context map. Build modules do not automatically imply separate domains.
 
-Read only applicable seeds: [local tasks](issue-tracker-local.md), [GitHub](issue-tracker-github.md), [GitLab](issue-tracker-gitlab.md), [labels](triage-labels.md) when enabled, and [domain docs](domain.md) for documentation routing. Adapt useful settings directly into `AGENTS.md`; do not copy a CLI manual or instructions for uninstalled workflows.
+Add conditional documentation guidance: consult the relevant glossary for domain terminology and relevant ADRs for design constraints. Missing documents do not block ordinary work; surface conflicts with recorded decisions rather than silently replacing them. Adapt useful settings directly into `AGENTS.md`; do not copy a CLI manual or instructions for uninstalled workflows.
 
 Proceed under the user's setup authorization once material choices are settled. Update the existing block in place or create it once. Do not create empty glossaries or ADRs. Verify concrete paths/targets, absence of conflicting duplicate configuration, and that documentation is read only when relevant. Report the resulting settings and unresolved choices.

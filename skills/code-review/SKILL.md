@@ -1,13 +1,13 @@
 ---
 name: code-review
-description: "Review a branch, PR, patch, or local changes against repository standards and the requested behavior. Use for review requests, not implementation."
+description: "Review changes, selected files, or a repository against standards and requirements. Use for review requests, not implementation."
 ---
 
 # Code Review
 
 Review is read-only unless fixes are requested. Report two separate assessments: **Standards** and **Spec**. Cover correctness and regressions as well as documented conventions; distinguish actionable defects from design preferences.
 
-Capture the user-selected changes using [scope.md](references/scope.md), including relevant untracked files for WIP. All reviewers must use the same captured state. Read applicable repository instructions and standards, then follow affected callers and contracts where needed to establish a finding.
+Establish the user-selected scope using [scope.md](references/scope.md), including relevant untracked files for WIP. All reviewers must assess the same state. Read applicable repository instructions and standards, then follow affected callers and contracts where needed to establish a finding.
 
 Use the user's requirements first, then relevant local specs or referenced issues. Read tracker settings from `AGENTS.md` only if external retrieval is needed. Missing tracker setup does not block local review. If no spec is available, complete Standards and explicitly mark Spec unassessed.
 

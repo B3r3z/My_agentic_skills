@@ -13,4 +13,4 @@ Reuse the approved plan and existing task IDs. Inspect relevant local code or do
 
 Resolve material gaps in behavior, scope, or dependency order with the user. An already approved breakdown needs no repeat approval. For authorized planning, save a useful breakdown and flag remaining assumptions rather than forcing a questionnaire.
 
-Use [local-tasks.md](references/local-tasks.md) when writing files. Preserve existing work, IDs, statuses, and notes. Finish with task paths and the tasks whose blockers are complete. Specification readiness does not imply execution readiness. Stop after planning unless implementation is separately requested.
+Use [local-tasks.md](references/local-tasks.md) when writing files. Preserve existing work, IDs, statuses, and notes. Finish with task paths and the next executable tasks, respecting dependency and integration-group rules. Specification readiness does not imply execution readiness. Stop after planning unless implementation is separately requested.

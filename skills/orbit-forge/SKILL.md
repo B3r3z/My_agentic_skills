@@ -17,7 +17,9 @@ Before dispatch, capture the starting state and initialize the small execution r
 
 ## 2. Dispatch a ready task
 
-Choose an incomplete task whose dependencies are satisfied:
+Choose an incomplete task whose dependencies are satisfied. Within an explicitly planned integration group, a prerequisite's `implemented` state permits the next member to start; dependencies outside the group must be `complete`.
+
+Choose the implementer:
 
 - Clear, bounded work: `gpt-5.6-luna`, reasoning effort `max`.
 - Consequential design decisions, concurrency, complex algorithms, or substantial uncertainty: `gpt-5.6-sol`, reasoning effort `high`.
@@ -32,7 +34,9 @@ Use the installed `tdd` skill when test-first work is requested or agreed; use `
 
 Mark the task active, then follow [waiting.md](references/waiting.md). A wait timeout is not evidence of failure. Do not poll diffs, logs, or status while the implementer is working.
 
-On completion, inspect the actual changes and validation evidence. Rerun or extend checks when code changed after validation, integration needs checking, or evidence is incomplete. Do not repeat identical checks solely because a different agent ran them. Send concrete contract failures back to the implementer; mark the task complete only after its criteria pass. Start the next ready task afterward.
+On completion, inspect the actual changes and validation evidence. Rerun or extend checks when code changed after validation, integration needs checking, or evidence is incomplete. Do not repeat identical checks solely because a different agent ran them. Send concrete contract failures back to the implementer. Normally, mark the task complete only after its criteria pass, then start the next ready task.
+
+For an explicitly planned integration group, check each member's independently verifiable criteria and record it as `implemented` while the named shared checks remain pending. Continue sequentially through the group without requiring those shared checks to pass early. This exception does not defer unrelated failures. After all members are implemented, run the shared checks and mark members complete only when all their criteria pass. Until then, the group remains unverified and does not unblock dependent work outside it. Do not invent a group to bypass a failed check.
 
 Root may make small mechanical integration fixes, then validate those changes. Delegate feature work. Changes to the approved goal, scope, or acceptance criteria need user direction.
 
