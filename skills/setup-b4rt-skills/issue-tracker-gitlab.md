@@ -1,5 +1,7 @@
 # Issue tracker: GitLab
 
+Reference for the corresponding section of `AGENTS.md`. Adapt only the relevant instructions into that file; do not create a separate project configuration file from this seed.
+
 Issues and specs for this repo live as GitLab issues. Use the [`glab`](https://gitlab.com/gitlab-org/cli) CLI for all operations.
 
 ## Conventions

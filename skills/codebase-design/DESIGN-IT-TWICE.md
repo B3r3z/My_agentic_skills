@@ -18,7 +18,7 @@ Show this to the user, then immediately proceed to Step 2. The user reads and th
 
 ### 2. Spawn sub-agents
 
-Spawn 3+ sub-agents in parallel. Each must produce a **radically different** interface for the deepened module.
+Produce three meaningfully different interface designs. Use available sub-agents for independent variants when useful; do not require three free slots. If delegation is unavailable or reaches a limit, produce the remaining variants sequentially yourself and disclose that they share context. Never wait indefinitely for agent capacity.
 
 Prompt each sub-agent with a separate technical brief (file paths, coupling details, dependency category from [DEEPENING.md](DEEPENING.md), what sits behind the seam). The brief is independent of the user-facing problem-space explanation in Step 1. Give each agent a different design constraint:
 
@@ -29,7 +29,7 @@ Prompt each sub-agent with a separate technical brief (file paths, coupling deta
 
 Include both [SKILL.md](SKILL.md) vocabulary and CONTEXT.md vocabulary in the brief so each sub-agent names things consistently with the architecture language and the project's domain language.
 
-Each sub-agent outputs:
+Each design, whether delegated or produced locally, includes:
 
 1. Interface (types, methods, params, plus invariants, ordering, error modes)
 2. Usage example showing how callers use it

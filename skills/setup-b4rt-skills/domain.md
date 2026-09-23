@@ -1,5 +1,7 @@
 # Domain Docs
 
+Reference for the corresponding section of `AGENTS.md`. Adapt only the relevant instructions into that file; do not create a separate project configuration file from this seed.
+
 How the engineering skills should consume this repo's domain documentation when exploring the codebase.
 
 ## Before exploring, read these

@@ -1,35 +1,34 @@
 ---
 name: code-review
-description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
+description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Reviews both axes, using parallel sub-agents when available, and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
 ---
 
-Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
+Two-axis review of the user-requested changes (committed changes, work in progress, or a specific patch):
 
 - **Standards**: does the code conform to this repo's documented coding standards?
 - **Spec**: does the code faithfully implement the originating issue / spec?
 
-Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
+Use independent parallel sub-agents when available. If delegation is unavailable or at its limit, review the two axes sequentially and disclose that they shared context. Review is read-only unless the user separately asks for fixes.
 
-The issue tracker should have been provided to you. If `docs/agents/issue-tracker.md` is missing, tell the user to run `/setup-b4rt-skills`.
+Read tracker and documentation settings from `AGENTS.md`. A local diff review does not require tracker setup; use the user-provided requirements or spec directly. Ask for missing tracker details only if fetching an external issue actually requires them.
 
 ## Process
 
-### 1. Pin the fixed point
+### 1. Capture the requested scope
 
-Whatever the user said is the fixed point (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If they didn't specify one, ask for it.
+Honor the user's selected scope. If unclear, ask whether the review covers committed changes, current local changes, or both; do not require a branch base for an explicitly local-only review.
 
-Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
+- **Committed branch changes:** resolve the branch/ref, calculate `git merge-base <base> HEAD`, and capture `git diff <merge-base> HEAD` plus the relevant commit list. For an exact commit range supplied by the user, preserve that range rather than substituting a merge-base.
+- **All changes since the branch base, including WIP:** capture `git diff <merge-base>` (tracked files from the base to the current working tree), and enumerate new files with `git ls-files --others --exclude-standard -z`. Read the in-scope new files as additions.
+- **Local-only WIP:** capture both `git diff --cached` and `git diff`, and enumerate untracked files as above. Keep staged and unstaged changes distinct when a file has both. For staged-only or unstaged-only requests, use only that requested scope.
 
-Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
+Use shell-safe argument handling for refs and paths. Do not stage, commit, reset, or stash changes just to review them. Untracked files can be ignored build artifacts or local secrets; inspect names first, include only relevant project changes, and never print secret values.
+
+Preserve the selected patches and the contents of included new files in a temporary review snapshot so both reviewers assess the same state. If source changes during capture, capture again or report the limitation. Only call the review empty when every selected source is empty, including relevant untracked files. Supply the snapshot, included-file list, scope, and commit list (if applicable) to each reviewer.
 
 ### 2. Identify the spec source
 
-Look for the originating spec, in this order:
-
-1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in `docs/agents/issue-tracker.md`.
-2. A path the user passed as an argument.
-3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
-4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
+Use requirements explicitly supplied by the user (including the current conversation or a spec path) first. Otherwise inspect relevant issue references in commits, using the tracker settings in `AGENTS.md`, then matching local specs under `docs/`, `specs/`, or `.scratch/`. Ask if multiple candidates conflict. If no requirements can be established, report "no spec available" and perform the Standards review; do not block it on project setup.
 
 ### 3. Identify the standards sources
 
@@ -55,17 +54,17 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
-### 4. Spawn both sub-agents in parallel
+### 4. Review each axis
 
 **Standards sub-agent prompt** should include:
 
-- The full diff command and commit list.
+- The captured review snapshot, scope, included files, and relevant commit list.
 - The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full (the sub-agent has no other access to it).
 - The brief: "Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
 **Spec sub-agent prompt** should include:
 
-- The diff command and commit list.
+- The same captured review snapshot, scope, included files, and relevant commit list.
 - The path or fetched contents of the spec.
 - The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
 

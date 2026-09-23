@@ -5,9 +5,9 @@ description: Diagnosis loop for hard bugs and performance regressions. Use when 
 
 # Diagnosing Bugs
 
-A discipline for hard bugs. Skip phases only when explicitly justified.
+A discipline for hard bugs. Diagnose only when diagnosis is requested; implement a fix when it is within the user's task. Adapt the phases to the available evidence and state any verification limits.
 
-When exploring the codebase, read `CONTEXT.md` (if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
+Use the documentation paths in `AGENTS.md`. When exploring the codebase, read the relevant glossary (`CONTEXT.md` by default, if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
 
 ## Redact
 
@@ -52,7 +52,7 @@ The goal is not a clean repro but a **higher reproduction rate**. Loop the trigg
 
 ### When you genuinely cannot build a loop
 
-Stop and say so explicitly. List what you tried. Ask the user for: (a) access to whatever environment reproduces it, (b) a redacted captured artifact (HAR file, log dump, core dump, screen recording with timestamps), or (c) permission to add temporary production instrumentation. Do **not** proceed to hypothesise without a loop.
+State what could not be reproduced and what you tried. Continue useful read-only analysis of code, stack traces, dumps, logs, and contracts. Rank hypotheses against that evidence and label them unconfirmed; use them to design the next reproduction attempt. Request only missing artifacts or access that would distinguish the hypotheses. Without a reproducible signal, do not claim a verified cause or fix.
 
 ### Completion criterion: a tight loop that goes red
 
@@ -63,7 +63,7 @@ Phase 1 is done when the loop is **tight** and **red-capable**: you can name **o
 - [ ] **Fast**: seconds, not minutes.
 - [ ] **Agent-runnable**: you can run it unattended; a human in the loop only via `scripts/hitl-loop.template.sh`.
 
-If you catch yourself reading code to build a theory before this command exists, **stop: jumping straight to a hypothesis is the exact failure this skill prevents.** No red-capable command, no Phase 2.
+Reading code and forming evidence-based hypotheses is allowed while constructing the loop. If a loop cannot be built, use the evidence-only path above and report its limits. The checklist defines a reproducible validation path, not a prerequisite for every diagnostic action.
 
 ## Phase 2: Reproduce + minimise
 
@@ -83,7 +83,7 @@ Why bother: a minimal repro shrinks the hypothesis space in Phase 3 (fewer movin
 
 Done when **every remaining element is load-bearing**: removing any one of them makes the loop go green.
 
-Do not proceed until you have reproduced **and** minimised.
+When reproduction is available, minimise it before experimenting with fixes. In evidence-only diagnosis, continue with the available artifacts and state that reproduction and minimisation remain unverified.
 
 ## Phase 3: Hypothesise
 
@@ -113,6 +113,8 @@ Tool preference:
 
 ## Phase 5: Fix + regression test
 
+For a diagnosis-only request, report the evidence, likely cause, uncertainty, and proposed fix, then stop. Continue this phase only when fixing the bug is in scope.
+
 Write the regression test **before the fix**, but only if there is a **correct seam** for it.
 
 A correct seam is one where the test exercises the **real bug pattern** as it occurs at the call site. If the only available seam is too shallow (single-caller test when the bug needs multiple callers, unit test that can't replicate the chain that triggered the bug), a regression test there gives false confidence.
@@ -129,7 +131,7 @@ If a correct seam exists:
 
 ## Phase 6: Cleanup
 
-Required before declaring done:
+For diagnosis-only work, report what is established and what remains unverified, and remove only temporary instrumentation you introduced. For an implemented fix, verify the following before claiming it is validated; explicitly report any checks that could not be completed:
 
 - [ ] Original repro no longer reproduces (re-run the Phase 1 loop)
 - [ ] Regression test passes (or absence of seam is documented)

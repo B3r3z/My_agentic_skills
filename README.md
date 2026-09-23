@@ -25,7 +25,7 @@ npx skills add B3r3z/My_agentic_skills
 
 Select the skills above and their dependencies for your agent. For manual Codex installation, copy each selected directory under `skills/` into `~/.codex/skills/`, keeping its supporting files and license. Do not overwrite an existing installation without reviewing local changes.
 
-In each project, explicitly invoke `$setup-b4rt-skills` once before using the engineering workflows. You can choose local Markdown for tasks instead of an external issue tracker. Installing this collection does not run project setup automatically.
+In each project, invoke `$setup-b4rt-skills` to configure tracker settings, optional labels, and documentation paths directly in `AGENTS.md`. Glossaries stay in `CONTEXT.md` (or per-context files), and decisions stay in ADR files. You can choose local Markdown for tasks instead of an external issue tracker. Installing this collection does not run project setup automatically.
 
 Suggested use: `$grill-with-docs` for design, `$to-tickets` for larger plans, `$tdd` during implementation, `$code-review` before a PR, and `$diagnosing-bugs` for difficult failures.
 

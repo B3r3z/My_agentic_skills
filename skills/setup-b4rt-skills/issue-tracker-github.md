@@ -1,5 +1,7 @@
 # Issue tracker: GitHub
 
+Reference for the corresponding section of `AGENTS.md`. Adapt only the relevant instructions into that file; do not create a separate project configuration file from this seed.
+
 Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all operations.
 
 ## Conventions

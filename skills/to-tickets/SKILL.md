@@ -7,7 +7,7 @@ description: Break a plan, spec, or the current conversation into a set of trace
 
 Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
 
-The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/setup-b4rt-skills`.
+Read tracker settings and the optional label policy from `AGENTS.md`. Use the user's explicit tracker choice when provided. If the destination is not established, ask for it or suggest `$setup-b4rt-skills`; do not require labels or the `triage` skill. This workflow plans and publishes tickets; it does not implement them.
 
 ## Process
 
@@ -19,7 +19,7 @@ Work from whatever is already in the conversation context. If the user passes a 
 
 If you have not already explored the codebase, do so to understand the current state of the code. Ticket titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
 
-Look for opportunities to prefactor the code to make the implementation easier. "Make the change easy, then make the easy change."
+Identify any prerequisite refactoring to include as planned tickets. Do not perform that refactoring during ticket creation.
 
 ### 3. Draft vertical slices
 
@@ -30,7 +30,7 @@ Break the work into **tracer bullet** tickets.
 - Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests): vertical, NOT a horizontal slice of one layer
 - A completed slice is demoable or verifiable on its own
 - Each slice is sized to fit in a single fresh context window
-- Any prefactoring should be done first
+- Any prerequisite refactoring should be scheduled before the dependent implementation tickets
 
 </vertical-slice-rules>
 
@@ -56,12 +56,12 @@ Iterate until the user approves the breakdown.
 
 ### 5. Publish the tickets to the configured tracker
 
-Publish the approved tickets. **How** depends on the tracker `/setup-b4rt-skills` configured; the tickets are the same either way, only the shape of the blocking edges changes:
+Publish the approved tickets. **How** depends on the tracker configured in `AGENTS.md`; the tickets are the same either way, only the shape of the blocking edges changes:
 
-- **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
-- **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking / sub-issue relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. Apply the `ready-for-agent` triage label unless instructed otherwise; the tickets are agent-grabbable by construction.
+- **Local files** → use the task directory configured in `AGENTS.md` (default `.scratch/<feature-slug>/issues/`). Write one file per ticket as `<NN>-<slug>.md`, numbered in dependency order (blockers first), starting at `01` only for a new set. Preserve existing files; reuse matching tickets when updating a plan and allocate unused numbers for additions. Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
+- **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking / sub-issue relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. Apply only labels enabled and mapped in `AGENTS.md`. With `Labels: none`, publish without labels. Verify configured labels exist before publishing; ask whether to create or omit a missing label. A readiness label means the ticket is specified, not that its blockers are complete.
 
-Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
+Finish by reporting the **frontier**: tickets whose blockers are all complete. Stop after reporting the created tickets and their dependencies. Do not claim tickets, change application code, or begin implementation unless separately requested.
 
 Do NOT close or modify any parent issue.
 

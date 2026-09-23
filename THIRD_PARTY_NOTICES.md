@@ -21,3 +21,11 @@ Local changes:
 - Included the upstream MIT license in each copied skill so standalone installations retain the notice.
 - Preserved upstream invocation policies and workflow rules.
 - Removed Claude-specific `disable-model-invocation` frontmatter; retained equivalent existing Codex policies in `agents/openai.yaml`.
+
+Review fixes (2026-09-23):
+
+- Centralized project agent configuration in AGENTS.md; kept glossary and ADR content separate and preserved migration inputs.
+- Made labels optional and aligned setup, ticket creation, and review consumers.
+- Added WIP-aware review scopes, explicit requirements precedence, and delegation fallbacks.
+- Restored the TDD refactor step and clarified existing-behavior tests.
+- Allowed evidence-only diagnosis, scoped fixes to the request, clarified interview documentation writes, preserved regression coverage, and corrected context-specific ADR paths.
