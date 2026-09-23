@@ -8,7 +8,7 @@ Record only what is needed to resume and verify:
 
 ```markdown
 # Execution: <goal>
-Source: <plan or ticket references and revision>
+Source: <approved plan or local task files and revision>
 Baseline: <HEAD SHA; location of private starting-state snapshot>
 State: active | blocked | complete
 
@@ -21,9 +21,9 @@ Correction rounds without progress: 0
 Review: requirements pending; code quality pending
 ```
 
-For a conversation-only plan, first save the approved requirements once at the configured plan location, default `docs/plan/YYYY-MM-DD-<slug>.md`. Include goal, scope, acceptance criteria, and bounded tasks with dependencies and checks. Then link to it from the execution record. Existing ticket sets need no new plan file.
+For a conversation-only plan, first save the approved requirements once at the configured plan location, default `docs/plan/YYYY-MM-DD-<slug>.md`. Include goal, scope, acceptance criteria, and bounded tasks with dependencies and checks. Then link to it from the execution record. Existing local task sets need no new plan file.
 
-Task states are `pending`, `active`, `implemented`, `blocked`, and `complete`. Use `implemented` only for a member of a planned integration group whose individual checks passed and whose shared verification is still pending. Link the group's source definition, member IDs, and shared checks; record their results when available. This state permits continuation within the group, not completion or dependent work outside it. Preserve source-ticket statuses unless updating them is authorized.
+Task states are `pending`, `active`, `implemented`, `blocked`, and `complete`. Use `implemented` only for a member of a planned integration group whose individual checks passed and whose shared verification is still pending. Link the group's source definition, member IDs, and shared checks; record their results when available. This state permits continuation within the group, not completion or dependent work outside it. Preserve source task statuses unless updating them is authorized.
 
 ## Preserve the dirty baseline
 
