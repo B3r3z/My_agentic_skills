@@ -1,7 +1,7 @@
 interface:
-  display_name: "Plan-led Sol / Luna Development"
-  short_description: "Sequential implementation with Sol plan review"
-  default_prompt: "Use $orbit-forge to execute this approved plan sequentially and verify the final diff against it."
+  display_name: "Orbit Forge"
+  short_description: "Sequential execution with event-driven waiting"
+  default_prompt: "Use $orbit-forge to execute this approved plan or ticket set sequentially, wait for agent results, and obtain an independent final review."
 
 policy:
   allow_implicit_invocation: false

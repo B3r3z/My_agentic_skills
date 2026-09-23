@@ -1,121 +1,45 @@
 ---
 name: orbit-forge
-description: Execute an approved repository implementation plan through a root-orchestrated, sequential Luna MAX or Sol HIGH workflow with an independent Sol plan-conformance review. Use explicitly for local development, not for coaching or non-development conversations.
+description: Execute an approved plan or tickets sequentially with Luna MAX or Sol HIGH implementers and an independent Sol HIGH review. Use explicitly for repository implementation.
 ---
 
-# Plan-led Sol / Luna Development
+# Orbit Forge
 
-The root session is the orchestrator. It owns the plan contract, decomposition,
-routing, integration gates, and final response. Implementation belongs to
-subagents. Keep one implementation subagent active at a time.
+Root owns dispatch, execution state, scope decisions, and acceptance. One implementation agent works at a time. Reuse the approved requirements; do not repeat product discovery or rebuild an existing backlog.
 
-## 1. Materialize the plan
+## 1. Establish the execution contract
 
-Before dispatching implementation, root turns the supplied or approved plan
-into `docs/plan/YYYY-MM-DD-<title>.md`, using the repository's local date and a
-short kebab-case title. Create `docs/plan/` when needed. Do not overwrite an
-unrelated plan with the same name.
+Read `AGENTS.md` for project instructions, tracker settings, documentation paths, and any Orbit Forge overrides. Use existing plan/ticket IDs, dependencies, scope, and acceptance criteria. Read the linked glossary and ADRs only where relevant. Fill gaps needed for execution; ask only when an unresolved decision changes behavior or scope.
 
-The plan file is the execution contract and must contain:
+If the approved plan exists only in conversation, save it once at the configured plan location (default `docs/plan/`). If tickets already exist, link them without copying them into a second backlog. Split work only when it lacks bounded, verifiable tasks. Planning with `grill-with-docs` or `to-tickets` is optional upstream work, not a prerequisite to run again.
 
-```markdown
-# <Title>
+Before dispatch, capture the starting state and initialize the small execution record described in [execution-state.md](references/execution-state.md). Root alone maintains this record. Tracker updates, commits, pushes, deployments, and other external writes require authorization in the user's task.
 
-- Date: YYYY-MM-DD
-- Status: active
-- Source: <where the supplied or approved plan came from>
-- Baseline: <git ref and pre-existing working-tree changes>
+## 2. Dispatch a ready task
 
-## Goal
-## In scope
-## Out of scope
-## Acceptance criteria
+Choose an incomplete task whose dependencies are satisfied:
 
-## Subtasks
+- Clear, bounded work: `gpt-5.6-luna`, reasoning effort `max`.
+- Consequential design decisions, concurrency, complex algorithms, or substantial uncertainty: `gpt-5.6-sol`, reasoning effort `high`.
 
-### T01 - <bounded outcome>
-- Status: pending
-- Depends on: none
-- Agent: Luna MAX | Sol HIGH
-- Owned paths: <paths or modules>
-- Covers: <acceptance-criterion IDs>
-- Work: <required behavior, not an implementation guess>
-- Validate: <commands or observable checks>
+Pass model and effort directly to the available delegation tool, with an empty or bounded history fork and a self-contained assignment. Do not rely on named custom roles. If the required configuration is unavailable, report the blocker without silently substituting it. Reuse an existing suitable implementer for corrections or subsequent tasks when supported; preserve capacity for an independent final reviewer.
 
-## Plan changes
-## Final review
-```
+Give the implementer the source task, repository instructions, owned paths, relevant context, acceptance criteria, and validation expectations. Preserve all pre-existing and unrelated work. The implementer may change assigned code, tests, and implementation documentation, but not the source requirements or execution record.
 
-Split the plan into the smallest independently verifiable subtasks that still
-produce coherent changes. Order them by real dependency. Every acceptance
-criterion must map to at least one subtask, and every subtask must state its
-scope and completion check. Record assumptions; ask the user only when a
-missing decision would materially change scope or behavior.
+Use the installed `tdd` skill when test-first work is requested or agreed; use `diagnosing-bugs` for difficult failures when appropriate. Do not impose either workflow on every task.
 
-Only root edits the plan contract or task status. A subagent may report that a
-change is needed but must not silently widen its task. Root records necessary
-minor corrections in `Plan changes` before implementation. Obtain user
-direction before changing the goal, agreed scope, or acceptance criteria.
+## 3. Wait and accept
 
-## 2. Route each subtask
+Mark the task active, then follow [waiting.md](references/waiting.md). A wait timeout is not evidence of failure. Do not poll diffs, logs, or status while the implementer is working.
 
-Choose one implementer for the current subtask:
+On completion, inspect the actual changes and validation evidence. Rerun or extend checks when code changed after validation, integration needs checking, or evidence is incomplete. Do not repeat identical checks solely because a different agent ran them. Send concrete contract failures back to the implementer; mark the task complete only after its criteria pass. Start the next ready task afterward.
 
-- **Luna MAX** for clear, bounded work with explicit acceptance criteria. Use
-  `luna_implementer`; its role pins GPT-5.6 Luna at `max` effort.
-- **Sol HIGH** for consequential design tradeoffs, complex algorithms or
-  concurrency, security-sensitive logic, broad unfamiliar code, or unresolved
-  implementation uncertainty. Spawn a write-capable `worker` with model
-  `gpt-5.6-sol`, reasoning effort `high`, and a bounded or empty history fork;
-  include all required context in its assignment.
+Root may make small mechanical integration fixes, then validate those changes. Delegate feature work. Changes to the approved goal, scope, or acceptance criteria need user direction.
 
-If the required model and effort are unavailable, stop and report the missing
-capability. Do not silently substitute another configuration.
+## 4. Review and finish
 
-Give the implementer the plan path, exact task ID and text, repository
-instructions, owned paths, relevant context, acceptance criteria, and targeted
-validation. State that other work may exist in the tree and must be preserved.
-The implementer changes only its assigned code, tests, and implementation-facing
-documentation; it does not edit the plan file, commit, push, deploy, or perform
-live/external writes without explicit user authorization.
+After implementation, obtain a fresh read-only `gpt-5.6-sol` / `high` reviewer, independent of the implementer. Supply the source requirements, execution record, preserved baseline, final changes including WIP, and validation evidence. Use the installed `code-review` skill's scope capture and Standards/Spec criteria; have this reviewer assess both axes without spawning another reviewer layer. Its Code quality assessment must also cover correctness and regressions.
 
-## 3. Execute sequentially
+Require evidence and a separate verdict for requirements and code quality. Root checks the validity of findings before reopening tasks. Route confirmed failures through the same implementation gate, then ask the independent reviewer to reassess the corrected scope; reuse that reviewer rather than creating a new instance for every round. Optional suggestions do not automatically fail a review.
 
-For each subtask in order:
-
-1. Root marks only that task `in_progress` and dispatches one implementer.
-2. The implementer returns the files changed, validation results, remaining
-   uncertainty, and any requested plan decision.
-3. Root inspects the actual diff and reruns or extends proportionate tests.
-4. If the task misses its contract, send precise corrections back to the same
-   implementer and repeat the gate.
-5. Mark the task `complete` only when its mapped acceptance criteria and
-   validation pass. Then, and only then, start the next task.
-
-Keep later tasks out of implementation until their dependencies are complete.
-Root may make plan/status edits and small mechanical integration fixes; feature
-implementation remains delegated while the required agent is available.
-
-## 4. Run the Sol HIGH final review
-
-After all subtasks are complete, spawn a fresh, read-only reviewer with model
-`gpt-5.6-sol`, reasoning effort `high`, and a bounded or empty history fork.
-Give it the complete plan file, repository instructions, the baseline and final
-diff, and all validation evidence. The reviewer inspects the repository itself
-and reports two independent axes:
-
-1. **Plan conformance** - map every acceptance criterion and subtask to concrete
-   implementation and test evidence; identify omissions, extra scope, changed
-   behavior, and undocumented deviations.
-2. **Code quality** - check correctness, regressions, maintainability, security,
-   edge cases, and whether tests meaningfully cover the changed behavior.
-
-Require file-and-line evidence for findings, severity, and a separate
-`PASS`/`FAIL` verdict for each axis. The reviewer does not edit files.
-
-Any `FAIL` reopens the affected subtask. Root sends each finding through the
-same sequential implementation and validation gate, then runs a fresh SOL HIGH
-review of the corrected final diff. Finish only when both axes pass, or report a
-specific blocker and the still-open plan items.
-
-Preserve unrelated working-tree and staging changes throughout the workflow.
+After the configured no-progress limit (default two correction rounds on confirmed failures), stop the loop and report the blocker and open items. Missing reviewer capacity leaves review pending, never passed. Report completion only when acceptance and both review axes pass; otherwise state the exact incomplete checks. End with changes made, validation, and remaining limits.

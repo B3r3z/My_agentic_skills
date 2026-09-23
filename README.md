@@ -15,7 +15,7 @@ Personal skills collection for Codex and other compatible coding agents.
 
 Included dependencies: `grilling`, `domain-modeling`, and `codebase-design`.
 
-The collection also retains the existing `orbit-forge` skill.
+`orbit-forge` executes an approved plan or ticket set sequentially using Luna MAX / Sol HIGH and an independent Sol HIGH review. It reuses the source requirements, records execution state locally, and waits for agent events instead of repeatedly polling progress. Waiting and state-location overrides belong in `AGENTS.md`.
 
 ## Installation
 
