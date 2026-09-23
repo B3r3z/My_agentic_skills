@@ -9,7 +9,7 @@ Review is read-only unless fixes are requested. Report two separate assessments:
 
 Establish the user-selected scope using [scope.md](references/scope.md), including relevant untracked files for WIP. All reviewers must assess the same state. Read applicable repository instructions and standards, then follow affected callers and contracts where needed to establish a finding.
 
-Use the user's requirements first, then relevant local specs or referenced issues. Read tracker settings from `AGENTS.md` only if external retrieval is needed. Missing tracker setup does not block local review. If no spec is available, complete Standards and explicitly mark Spec unassessed.
+Use the user's requirements first, then relevant local specs or issue descriptions supplied in the task or present in the repository. Base the review on supplied and repository-local evidence; do not retrieve tickets from an external tracker. If no spec is available, complete Standards and explicitly mark Spec unassessed.
 
 Independent parallel reviewers may assess the two axes when useful and available. Otherwise assess them sequentially and disclose shared context. An enclosing orchestrator may require one independent reviewer to cover both axes; do not create another reviewer layer in that case.
 
