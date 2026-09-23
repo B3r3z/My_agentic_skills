@@ -1,38 +1,16 @@
 ---
 name: tdd
-description: Test-driven development. Use when the user requests test-first implementation or fixes, or a red-green-refactor workflow. Merely adding integration tests for existing behavior does not require this workflow.
+description: "Implement requested behavior using test-first red-green-refactor cycles. Use when the user requests TDD; adding tests for existing behavior alone does not require this skill."
 ---
 
 # Test-Driven Development
 
-TDD is the red → green → refactor loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle: consult them before and during the loop, not after.
+Complete the requested behavior in small verified slices. Reuse agreed requirements and test boundaries; clarify only ambiguities that would change observable behavior.
 
-Use the documentation paths in `AGENTS.md`. When exploring the codebase, read the relevant glossary (`CONTEXT.md` by default, if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
+For new behavior or a reproduced bug, write a focused test, observe it fail for the intended reason, implement enough to pass, then simplify the changed code where useful. Rerun affected tests after refactoring. Continue through the requested scope rather than stopping at the first green test.
 
-## What a good test is
+Test observable contracts at an appropriate public boundary. Expected results must come from the specification or independently worked examples, not a copy of implementation logic. Prefer tests that survive internal restructuring. Existing working behavior may pass on its first characterization test; never break production code to manufacture a red step.
 
-Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification: "user can checkout with valid cart" tells you exactly what capability exists, and it survives refactors because it doesn't care about internal structure.
+Consult [tests.md](tests.md) when choosing assertions or test boundaries, and [mocking.md](mocking.md) when deciding how to control dependencies. Use `codebase-design` only if interface design itself needs work. Domain documentation is relevant when it resolves behavior or terminology, not a prerequisite to every cycle.
 
-See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
-
-## Seams: where tests go
-
-A **seam** is the public boundary you test at: the interface where you observe behavior without reaching inside. Tests live at seams, never against internals.
-
-Test through the public boundaries agreed in the user request, spec, or existing test strategy. Reuse prior agreements; ask only when the boundary or expected behavior is materially ambiguous. State the chosen boundary briefly and focus effort on critical paths and complex logic.
-
-For tests characterizing already-working behavior, a first green result is valid. Verify that assertions can detect a regression, but never break production code simply to manufacture a red step. Apply the red-first rule to new behavior or a reproduced bug.
-
-When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface should expose), read the installed `codebase-design` skill for the vocabulary. It is the shared source of the module, interface, depth, seam, adapter, leverage and locality terms, and it is a reference to consult, not a session to run.
-
-## Anti-patterns
-
-- **Implementation-coupled**: mocks internal collaborators, tests private methods, or verifies through a side channel (querying the database instead of using the interface). The tell: the test breaks when you refactor but behavior hasn't changed.
-- **Tautological**: the assertion recomputes the expected value the way the code does (`expect(add(a, b)).toBe(a + b)`, a snapshot derived by hand the same way, a constant asserted equal to itself), so it passes by construction and can never disagree with the code. Expected values must come from an independent source of truth: a known-good literal, a worked example, the spec.
-- **Horizontal slicing**: writing all tests first, then all implementation. Bulk tests verify _imagined_ behavior: you test the _shape_ of things rather than user-facing behavior, the tests go insensitive to real changes, and you commit to test structure before understanding the implementation. Work in **vertical slices** instead: one test → one implementation → repeat, each test a **tracer bullet** that responds to what the last cycle taught you.
-
-## Rules of the loop
-
-- **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
-- **One slice at a time.** One seam, one test, one minimal implementation per cycle.
-- **Refactor on green.** After the minimal implementation passes, simplify duplication or structure within the current slice without changing observable behavior. Rerun the relevant tests after each refactor. If no simplification is useful, move on; do not invent work. The `code-review` skill is a separate assessment, not the executor of this step.
+Run checks relevant to the changes and required repository checks. Repeat or broaden verification after further changes, failures, or incomplete evidence; avoid redundant runs for unchanged code. Finish with implemented behavior, verification evidence, and any unmet criteria.

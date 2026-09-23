@@ -1,6 +1,6 @@
 ---
 name: orbit-forge
-description: Execute an approved plan or tickets sequentially with Luna MAX or Sol HIGH implementers and an independent Sol HIGH review. Use explicitly for repository implementation.
+description: Execute an approved plan or tickets sequentially with Luna MAX or Sol HIGH implementers and an independent Sol HIGH review. Use only when the user explicitly requests Orbit Forge orchestration.
 ---
 
 # Orbit Forge
@@ -9,7 +9,7 @@ Root owns dispatch, execution state, scope decisions, and acceptance. One implem
 
 ## 1. Establish the execution contract
 
-Read `AGENTS.md` for project instructions, tracker settings, documentation paths, and any Orbit Forge overrides. Use existing plan/ticket IDs, dependencies, scope, and acceptance criteria. Read the linked glossary and ADRs only where relevant. Fill gaps needed for execution; ask only when an unresolved decision changes behavior or scope.
+Read applicable `AGENTS.md` instructions and Orbit Forge overrides; consult tracker settings only if the task uses that tracker. Use existing plan/ticket IDs, dependencies, scope, and acceptance criteria. Read the linked glossary and ADRs only where relevant. Fill gaps needed for execution; ask only when an unresolved decision changes behavior or scope.
 
 If the approved plan exists only in conversation, save it once at the configured plan location (default `docs/plan/`). If tickets already exist, link them without copying them into a second backlog. Split work only when it lacks bounded, verifiable tasks. Planning with `grill-with-docs` or `to-tickets` is optional upstream work, not a prerequisite to run again.
 

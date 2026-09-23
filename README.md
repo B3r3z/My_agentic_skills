@@ -30,3 +30,7 @@ In each project, invoke `$setup-b4rt-skills` to configure tracker settings, opti
 Suggested use: `$grill-with-docs` for design, `$to-tickets` for larger plans, `$tdd` during implementation, `$code-review` before a PR, and `$diagnosing-bugs` for difficult failures.
 
 These are adaptations of Matt Pocock's skills. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the source revision and changes; each copied skill includes its MIT license.
+
+## Instruction design
+
+Updated using [OpenAI’s guidance on skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra): narrow discovery descriptions, outcome-focused instructions, and supporting files read only when relevant. Setup generates conditional documentation guidance in `AGENTS.md` rather than mandatory reading lists. Existing invocation policies and Orbit Forge’s explicit Luna/Sol routing remain intact; this is an instruction migration, not a model configuration change.

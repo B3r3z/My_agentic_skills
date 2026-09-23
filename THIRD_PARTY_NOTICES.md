@@ -19,7 +19,7 @@ Local changes:
 - Renamed `setup-matt-pocock-skills` to `setup-b4rt-skills`, including cross-references and UI name.
 - Replaced two references to a harness-specific “Skill tool” with instructions to read the installed skill files for Codex compatibility.
 - Included the upstream MIT license in each copied skill so standalone installations retain the notice.
-- Preserved upstream invocation policies and workflow rules.
+- Preserved invocation policies; workflow adaptations are listed below.
 - Removed Claude-specific `disable-model-invocation` frontmatter; retained equivalent existing Codex policies in `agents/openai.yaml`.
 
 Review fixes (2026-09-23):
@@ -31,3 +31,10 @@ Review fixes (2026-09-23):
 - Allowed evidence-only diagnosis, scoped fixes to the request, clarified interview documentation writes, preserved regression coverage, and corrected context-specific ADR paths.
 
 - Made `to-tickets` local-only: local inputs, Markdown tasks, dependencies, status and follow-up notes; removed remote fetching, publishing and tracker operations.
+
+Instruction migration (2026-09-23):
+
+- Narrowed discovery descriptions and replaced generic process mandates with task outcomes and decision criteria.
+- Removed fixed question/hypothesis/design counts, repeat approval gates, and unconditional documentation loading.
+- Added conditional scope, experiment, and local-task references; reduced setup seeds to installed workflows.
+- Retained local-only task handling, separate domain documents, scoped verification, and Orbit Forge orchestration requirements.

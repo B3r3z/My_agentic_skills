@@ -1,8 +1,12 @@
 ---
 name: grill-with-docs
-description: A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.
+description: "Refine a plan through a design interview and record agreed domain terms and consequential decisions. Use when explicitly requested."
 ---
 
-Read and follow the installed `grilling` and `domain-modeling` skills (their `SKILL.md` files). Apply both during this session.
+# Grill With Docs
 
-Invoking this skill authorizes documenting terms and decisions agreed during the interview. Save each resolved term and accepted ADR as it is agreed; distinguish proposals from accepted decisions and revise documents if the agreement changes. These documentation updates are an explicit exception to `grilling`'s final confirmation gate, which still applies to implementation or other follow-on actions. Honor any user request for discussion without file edits. Read the documentation paths from `AGENTS.md`; store the glossary and ADRs in their separate files.
+Use the installed `grilling` skill to resolve the plan's consequential uncertainties. Reuse existing decisions; do not restart discovery for an approved plan.
+
+This invocation includes recording agreed documentation unless the user limits the session to discussion. When a definition or qualifying decision is ready to record, consult `domain-modeling` and its relevant format. Keep proposals distinct from accepted decisions, preserve configured paths from `AGENTS.md`, and do not create empty documents.
+
+End with the agreed plan, updated document paths, and material unresolved choices. Continue implementation only when it is already authorized; recording documentation does not by itself authorize application changes.

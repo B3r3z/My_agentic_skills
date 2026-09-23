@@ -1,59 +1,9 @@
-# When to Mock
+# Controlling dependencies
 
-Mock at **system boundaries** only:
+Prefer real internal behavior. Introduce a double when it controls a relevant boundary: remote service, clock, randomness, filesystem, or costly infrastructure. Ownership alone does not decide whether to mock; an owned remote service can still need a test double.
 
-- External APIs (payment, email, etc.)
-- Databases (sometimes - prefer test DB)
-- Time/randomness
-- File system (sometimes)
+Use a test database or realistic local substitute when database semantics are part of the contract. A mock cannot establish transaction, query, or concurrency behavior it does not implement.
 
-Don't mock:
+Assert externally meaningful outcomes. Calls, counts, or ordering are useful assertions when they are themselves contractual, such as preventing duplicate payments; avoid them for incidental internal choreography.
 
-- Your own classes/modules
-- Internal collaborators
-- Anything you control
-
-## Designing for Mockability
-
-At system boundaries, design interfaces that are easy to mock:
-
-**1. Use dependency injection**
-
-Pass external dependencies in rather than creating them internally:
-
-```typescript
-// Easy to mock
-function processPayment(order, paymentClient) {
-  return paymentClient.charge(order.total);
-}
-
-// Hard to mock
-function processPayment(order) {
-  const client = new StripeClient(process.env.STRIPE_KEY);
-  return client.charge(order.total);
-}
-```
-
-**2. Prefer SDK-style interfaces over generic fetchers**
-
-Create specific functions for each external operation instead of one generic function with conditional logic:
-
-```typescript
-// GOOD: Each function is independently mockable
-const api = {
-  getUser: (id) => fetch(`/users/${id}`),
-  getOrders: (userId) => fetch(`/users/${userId}/orders`),
-  createOrder: (data) => fetch('/orders', { method: 'POST', body: data }),
-};
-
-// BAD: Mocking requires conditional logic inside the mock
-const api = {
-  fetch: (endpoint, options) => fetch(endpoint, options),
-};
-```
-
-The SDK approach means:
-- Each mock returns one specific shape
-- No conditional logic in test setup
-- Easier to see which endpoints a test exercises
-- Type safety per endpoint
+Inject dependencies where this makes behavior controllable without speculative abstractions. Keep doubles consistent with the real contract, and cover important gaps with contract or integration checks. Choose interface shape for callers rather than solely for mocking convenience.

@@ -1,28 +1,12 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+description: "Stress-test a plan or decision through questions when the user requests a grilling, design interview, or challenge to their assumptions."
 ---
 
-Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
+# Grilling
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
+Find unresolved decisions that could change the plan's behavior, scope, or feasibility. Reuse answers already given and inspect available evidence before asking the user for facts you can establish yourself.
 
-Format a round like so:
+Prioritize consequential uncertainty. Ask a manageable set of concrete questions, explain why each matters, and suggest a recommendation when evidence supports one. Adapt follow-ups to the answers instead of exhausting a fixed questionnaire. Use examples to expose conflicting assumptions.
 
-```
-❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
-
-➡️ <your recommended answer>
-
----
-
-❓ **Q2** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
-
-➡️ <your recommended answer>
-```
-
-Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
-
-Look up available environmental facts yourself. Delegate an independent lookup only when useful and available; if delegation is absent or a limit is reached, use your own read tools and continue. While a lookup runs, ask questions that do not depend on its result. Ask the user for decisions or facts you cannot obtain from available evidence.
-
-Keep the decision tree within the requested goal. Finish when decisions needed for the next agreed step are settled; list deferred questions and explicit assumptions instead of expanding indefinitely. Confirm the shared understanding before implementation or other follow-on actions. When used by `grill-with-docs`, record agreed documentation during the interview as that skill directs; otherwise do not edit project files merely because an interview occurred.
+Stop when the requested decision or next step is sufficiently specified. Summarize the agreed plan and material open questions. A standalone interview does not authorize implementation or file edits; proceed with either when already included in the user's request. Do not demand a new approval for a settled, authorized next step.

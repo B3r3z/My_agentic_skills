@@ -1,86 +1,18 @@
 ---
 name: code-review
-description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Reviews both axes, using parallel sub-agents when available, and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
+description: "Review a branch, PR, patch, or local changes against repository standards and the requested behavior. Use for review requests, not implementation."
 ---
 
-Two-axis review of the user-requested changes (committed changes, work in progress, or a specific patch):
+# Code Review
 
-- **Standards**: does the code conform to this repo's documented coding standards?
-- **Spec**: does the code faithfully implement the originating issue / spec?
+Review is read-only unless fixes are requested. Report two separate assessments: **Standards** and **Spec**. Cover correctness and regressions as well as documented conventions; distinguish actionable defects from design preferences.
 
-Use independent parallel sub-agents when available. If delegation is unavailable or at its limit, review the two axes sequentially and disclose that they shared context. Review is read-only unless the user separately asks for fixes.
+Capture the user-selected changes using [scope.md](references/scope.md), including relevant untracked files for WIP. All reviewers must use the same captured state. Read applicable repository instructions and standards, then follow affected callers and contracts where needed to establish a finding.
 
-Read tracker and documentation settings from `AGENTS.md`. A local diff review does not require tracker setup; use the user-provided requirements or spec directly. Ask for missing tracker details only if fetching an external issue actually requires them.
+Use the user's requirements first, then relevant local specs or referenced issues. Read tracker settings from `AGENTS.md` only if external retrieval is needed. Missing tracker setup does not block local review. If no spec is available, complete Standards and explicitly mark Spec unassessed.
 
-## Process
+Independent parallel reviewers may assess the two axes when useful and available. Otherwise assess them sequentially and disclose shared context. An enclosing orchestrator may require one independent reviewer to cover both axes; do not create another reviewer layer in that case.
 
-### 1. Capture the requested scope
+For each finding, give the concrete failure or violated rule, evidence, affected location, and severity. Trace enough context to validate it; do not present hypothetical code smells as defects. Repository conventions override general design preferences. Avoid duplicating issues already established by tooling.
 
-Honor the user's selected scope. If unclear, ask whether the review covers committed changes, current local changes, or both; do not require a branch base for an explicitly local-only review.
-
-- **Committed branch changes:** resolve the branch/ref, calculate `git merge-base <base> HEAD`, and capture `git diff <merge-base> HEAD` plus the relevant commit list. For an exact commit range supplied by the user, preserve that range rather than substituting a merge-base.
-- **All changes since the branch base, including WIP:** capture `git diff <merge-base>` (tracked files from the base to the current working tree), and enumerate new files with `git ls-files --others --exclude-standard -z`. Read the in-scope new files as additions.
-- **Local-only WIP:** capture both `git diff --cached` and `git diff`, and enumerate untracked files as above. Keep staged and unstaged changes distinct when a file has both. For staged-only or unstaged-only requests, use only that requested scope.
-
-Use shell-safe argument handling for refs and paths. Do not stage, commit, reset, or stash changes just to review them. Untracked files can be ignored build artifacts or local secrets; inspect names first, include only relevant project changes, and never print secret values.
-
-Preserve the selected patches and the contents of included new files in a temporary review snapshot so both reviewers assess the same state. If source changes during capture, capture again or report the limitation. Only call the review empty when every selected source is empty, including relevant untracked files. Supply the snapshot, included-file list, scope, and commit list (if applicable) to each reviewer.
-
-### 2. Identify the spec source
-
-Use requirements explicitly supplied by the user (including the current conversation or a spec path) first. Otherwise inspect relevant issue references in commits, using the tracker settings in `AGENTS.md`, then matching local specs under `docs/`, `specs/`, or `.scratch/`. Ask if multiple candidates conflict. If no requirements can be established, report "no spec available" and perform the Standards review; do not block it on project setup.
-
-### 3. Identify the standards sources
-
-Anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
-
-On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
-
-- **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
-- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation. Like any standard here, skip anything tooling already enforces.
-
-Each smell reads *what it is* → *how to fix*; match it against the diff:
-
-- **Mysterious Name**: a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
-- **Duplicated Code**: the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
-- **Feature Envy**: a method that reaches into another object's data more than its own. → move the method onto the data it envies.
-- **Data Clumps**: the same few fields or params keep travelling together (a type wanting to be born). → bundle them into one type, pass that.
-- **Primitive Obsession**: a primitive or string standing in for a domain concept that deserves its own type. → give the concept its own small type.
-- **Repeated Switches**: the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
-- **Shotgun Surgery**: one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
-- **Divergent Change**: one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
-- **Speculative Generality**: abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
-- **Message Chains**: long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
-- **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
-- **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
-
-### 4. Review each axis
-
-**Standards sub-agent prompt** should include:
-
-- The captured review snapshot, scope, included files, and relevant commit list.
-- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full (the sub-agent has no other access to it).
-- The brief: "Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
-
-**Spec sub-agent prompt** should include:
-
-- The same captured review snapshot, scope, included files, and relevant commit list.
-- The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
-
-If the spec is missing, skip the Spec sub-agent and note this in the final report.
-
-### 5. Aggregate
-
-Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings, because the two axes are deliberately separate (see _Why two axes_).
-
-End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
-
-## Why two axes
-
-A change can pass one axis and fail the other:
-
-- Code that follows every standard but implements the wrong thing → **Standards pass, Spec fail.**
-- Code that does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
-
-Reporting them separately stops one axis from masking the other.
+Finish with separate Standards and Spec verdicts, actionable findings ordered by severity within each axis, and verification limits. A missing spec or unrun check is not a pass. No findings is a valid result; do not manufacture suggestions.
