@@ -29,3 +29,5 @@ Review fixes (2026-09-23):
 - Added WIP-aware review scopes, explicit requirements precedence, and delegation fallbacks.
 - Restored the TDD refactor step and clarified existing-behavior tests.
 - Allowed evidence-only diagnosis, scoped fixes to the request, clarified interview documentation writes, preserved regression coverage, and corrected context-specific ADR paths.
+
+- Made `to-tickets` local-only: local inputs, Markdown tasks, dependencies, status and follow-up notes; removed remote fetching, publishing and tracker operations.

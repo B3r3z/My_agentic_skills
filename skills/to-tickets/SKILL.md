@@ -1,19 +1,21 @@
 ---
 name: to-tickets
-description: Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).
+description: Split an approved plan, spec, or conversation into local Markdown tasks with acceptance criteria and dependencies. All ticket operations stay local; no external tracker interaction.
 ---
 
 # To Tickets
 
 Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
 
-Read tracker settings and the optional label policy from `AGENTS.md`. Use the user's explicit tracker choice when provided. If the destination is not established, ask for it or suggest `$setup-b4rt-skills`; do not require labels or the `triage` skill. This workflow plans and publishes tickets; it does not implement them.
+Use only the conversation and local project files. Read the local task-directory setting from `AGENTS.md`, defaulting to `.scratch/<feature-slug>/issues/`. No tracker setup, labels, credentials, or external services are needed.
+
+This skill creates and updates local Markdown files only. Do not fetch, create, update, comment on, or close issues in external systems, and do not sync or publish generated tasks. External tracker settings in `AGENTS.md` do not change this local-only workflow. Plan and record tasks; do not implement them.
 
 ## Process
 
 ### 1. Gather context
 
-Work from whatever is already in the conversation context. If the user passes a reference (a spec path, an issue number or URL) as an argument, fetch it and read its full body and comments.
+Use the requirements already present in the conversation or a local spec/task file. Read relevant local context. If the input is only an external issue number or URL, ask for the needed text in the conversation or a local export; do not retrieve it over the network. A supplied URL may be retained as a plain source reference without opening it.
 
 ### 2. Explore the codebase (optional)
 
@@ -54,16 +56,13 @@ Ask the user:
 
 Iterate until the user approves the breakdown.
 
-### 5. Publish the tickets to the configured tracker
+### 5. Save the approved tasks locally
 
-Publish the approved tickets. **How** depends on the tracker configured in `AGENTS.md`; the tickets are the same either way, only the shape of the blocking edges changes:
+Use the configured local task directory (default `.scratch/<feature-slug>/issues/`). Write one file per task as `<NN>-<slug>.md`, numbered in dependency order, starting at `01` only for a new set. Preserve existing files: update matching tasks when revising a plan and allocate unused numbers for additions. Keep stable IDs and use local IDs or relative Markdown links for dependencies.
 
-- **Local files** → use the task directory configured in `AGENTS.md` (default `.scratch/<feature-slug>/issues/`). Write one file per ticket as `<NN>-<slug>.md`, numbered in dependency order (blockers first), starting at `01` only for a new set. Preserve existing files; reuse matching tickets when updating a plan and allocate unused numbers for additions. Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
-- **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking / sub-issue relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. Apply only labels enabled and mapped in `AGENTS.md`. With `Labels: none`, publish without labels. Verify configured labels exist before publishing; ask whether to create or omit a missing label. A readiness label means the ticket is specified, not that its blockers are complete.
+Store task descriptions, acceptance criteria, dependencies, status, and any requested follow-up notes in those local files. Use the template below. `ready-for-agent` means specified; execution still requires every blocker to be complete. Do not translate local statuses into external labels or tracker updates.
 
-Finish by reporting the **frontier**: tickets whose blockers are all complete. Stop after reporting the created tickets and their dependencies. Do not claim tickets, change application code, or begin implementation unless separately requested.
-
-Do NOT close or modify any parent issue.
+Finish by reporting the file paths and the **frontier**: tasks whose blockers are all complete. Stop after recording and reporting the plan. Do not claim tasks, modify application code, or start implementation unless separately requested.
 
 <local-ticket-template>
 
@@ -80,25 +79,4 @@ Do NOT close or modify any parent issue.
 
 </local-ticket-template>
 
-<issue-template>
-
-## Parent
-
-A reference to the parent issue on the tracker (if the source was an existing issue, otherwise omit this section).
-
-## What to build
-
-The end-to-end behaviour this ticket makes work, from the user's perspective, not layer-by-layer implementation.
-
-## Acceptance criteria
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-## Blocked by
-
-- A reference to each blocking ticket, or "None (can start immediately)".
-
-</issue-template>
-
-In either form, avoid specific file paths or code snippets: they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+In task descriptions, avoid specific file paths or code snippets: they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.

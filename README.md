@@ -11,7 +11,7 @@ Personal skills collection for Codex and other compatible coding agents.
 | `tdd` | Implement behavior in small test-first steps. |
 | `diagnosing-bugs` | Reproduce, investigate, and verify bug fixes. |
 | `code-review` | Review changes against requirements and coding standards. |
-| `to-tickets` | Split work into independently verifiable slices. |
+| `to-tickets` | Split work into local Markdown tasks with acceptance criteria and dependencies; no external tracker interaction. |
 
 Included dependencies: `grilling`, `domain-modeling`, and `codebase-design`.
 

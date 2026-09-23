@@ -18,7 +18,8 @@ When migrating, bring the relevant tracker, label, and documentation settings in
 Reuse choices already made in this session or documented in the repo. Ask only when a material decision remains unresolved.
 
 - **Issue tracker:** GitHub, GitLab, local Markdown, or the user's existing tracker. A remote suggests a provider but does not authorize choosing it over an existing setting. Record the target repository/project and how to read and publish tickets.
-- **Labels:** optional. Record `Labels: none` when the user has no established label workflow, even when `to-tickets` is installed. If labels are wanted, record the role-to-label mapping in `AGENTS.md`; do not require the `triage` skill. Verify configured remote labels exist before using them. If one is missing, ask whether to create it or omit it; publishing authorization alone does not require labels.
+- **Local tasks:** record the local directory used by `to-tickets`, default `.scratch/<feature-slug>/issues/`. This skill always works locally, regardless of the tracker selected for other workflows; it needs no labels or remote access.
+- **Labels:** optional. Record `Labels: none` when the user has no established label workflow. If labels are wanted, record the role-to-label mapping in `AGENTS.md`; do not require the `triage` skill. Verify configured remote labels exist before using them. If one is missing, ask whether to create it or omit it; publishing authorization alone does not require labels.
 - **Domain documents:** preserve existing locations and context boundaries. Otherwise use root `CONTEXT.md` and `docs/adr/`. Use `CONTEXT-MAP.md` and per-context paths when actual domain boundaries justify them, regardless of language/build system. Record the paths and when to read the documents.
 
 Use the relevant seed as a reference, adapting its applicable instructions directly into the `AGENTS.md` block rather than generating separate configuration documents:
@@ -43,7 +44,8 @@ The resulting block contains concrete values, not unresolved placeholders:
 ### Issue tracker
 
 Provider and target repository/project, or local task directory.
-Instructions for reading and publishing specs/tickets, including dependency representation.
+Instructions for reading and publishing specs/tickets in workflows that use the tracker.
+Local tasks (to-tickets): .scratch/<feature-slug>/issues/ — local Markdown only.
 
 ### Labels
 
