@@ -1,75 +1,48 @@
 ---
 name: to-spec
-description: "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed."
-disable-model-invocation: true
+description: "Synthesize an agreed conversation into a local feature spec for a Markdown-ticket workflow. Use when a durable spec is needed before task breakdown; do not interview or implement."
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
+# To Spec
 
-The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+Turn the decisions already made in the conversation into one durable local spec. This is synthesis, not another design interview or an implementation pass. Use only the conversation and local project files for task context; do not read, create, label, or publish issues in an external tracker. If the sole input is an external task reference, ask for its text or a local export.
 
-## Process
+Read relevant code, the project's glossary, and applicable ADRs to ground the spec. Preserve the distinction between confirmed decisions, proposals, and open questions. Identify the highest useful behavioral test seam, preferring an existing seam. If a consequential seam or behavior is unresolved, record it under **Open Decisions** and ask for a targeted decision before calling the spec ready; do not silently choose on the user's behalf.
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
+Save the spec at the plan/spec path configured in `AGENTS.md`, defaulting to `docs/plan/YYYY-MM-DD-<slug>.md`. If an approved plan or spec for this effort already exists, enrich that document rather than creating a competing source of truth. Preserve its confirmed scope and link to any existing local tasks instead of copying their backlog into the spec. Do not create implementation tickets here; `$to-tickets` handles that when requested.
 
-2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
-
-Check with the user that these seams match their expectations.
-
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
-
-<spec-template>
+Use these sections, omitting only ones that are genuinely inapplicable:
 
 ## Problem Statement
 
-The problem that the user is facing, from the user's perspective.
+Describe the problem from the user's perspective.
 
 ## Solution
 
-The solution to the problem, from the user's perspective.
+Describe the intended behavior and scope from the user's perspective.
 
 ## User Stories
 
-A LONG, numbered list of user stories. Each user story should be in the format of:
-
-1. As an <actor>, I want a <feature>, so that <benefit>
-
-<user-story-example>
-1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
-</user-story-example>
-
-This list of user stories should be extremely extensive and cover all aspects of the feature.
+Number the distinct actor goals that clarify the feature. Cover meaningful behavior and edge cases without padding the list to an arbitrary length.
 
 ## Implementation Decisions
 
-A list of implementation decisions that were made. This can include:
-
-- The modules that will be built/modified
-- The interfaces of those modules that will be modified
-- Technical clarifications from the developer
-- Architectural decisions
-- Schema changes
-- API contracts
-- Specific interactions
-
-Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
-
-Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+Record agreed module boundaries, contracts, data changes, and other consequential constraints. Prefer durable decisions over speculative file lists or working code. A short prototype extract is appropriate only when it expresses a decision more precisely than prose.
 
 ## Testing Decisions
 
-A list of testing decisions that were made. Include:
-
-- A description of what makes a good test (only test external behavior, not implementation details)
-- Which modules will be tested
-- Prior art for the tests (i.e. similar types of tests in the codebase)
+Name the chosen behavioral seam, relevant prior-art tests, and what observable outcomes will establish success. Avoid testing private implementation details as the contract.
 
 ## Out of Scope
 
-A description of the things that are out of scope for this spec.
+State deliberate exclusions.
+
+## Open Decisions
+
+List unresolved choices and the consequence of each. If none remain, say so briefly.
 
 ## Further Notes
 
-Any further notes about the feature.
+Link relevant local plans, research, decision records, or tickets without duplicating their content.
 
-</spec-template>
+Finish with the saved path, any open decisions, and whether the spec is ready for `$to-tickets`. Specification readiness does not itself authorize ticket creation or implementation.

@@ -12,7 +12,7 @@ The following skills are adapted from [Matt Pocock’s skills](https://github.co
 - `codebase-design`
 - `grilling`
 
-The following skills were copied from the same upstream commit without changes to `SKILL.md` or `agents/openai.yaml`:
+The following skills were copied from the same upstream commit and subsequently adapted for this collection:
 
 - `to-spec`
 - `wayfinder`
@@ -44,3 +44,10 @@ Instruction migration (2026-09-23):
 - Removed fixed question/hypothesis/design counts, repeat approval gates, and unconditional documentation loading.
 - Added conditional scope, experiment, and local-task references; reduced setup seeds to installed workflows.
 - Retained local-only task handling, separate domain documents, scoped verification, and Orbit Forge orchestration requirements.
+
+Local Markdown flow adaptation (2026-09-26):
+
+- `to-spec` now writes one local spec at the configured plan path (default `docs/plan/`), keeps open decisions explicit, and hands off to `to-tickets` only when requested; removed issue publishing and triage labels.
+- `wayfinder` now keeps a local map and decision tickets separate from implementation tickets, with file-based blockers, claims, resolutions, and research links; removed external tracker, branch, and harness-specific Skill tool instructions.
+- `research` now saves a cited local note, links it to a decision ticket when applicable, and works without mandatory background delegation or an external task system.
+- Preserved existing Codex explicit-invocation policies for `to-spec` and `wayfinder`; removed their Claude-specific `disable-model-invocation` frontmatter.
