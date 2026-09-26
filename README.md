@@ -12,6 +12,9 @@ Personal skills collection for Codex and other compatible coding agents.
 | `diagnosing-bugs` | Reproduce, investigate, and verify bug fixes. |
 | `code-review` | Review changes against requirements and coding standards. |
 | `to-tickets` | Split work into local Markdown tasks with acceptance criteria and dependencies; no external tracker interaction. |
+| `to-spec` | Synthesize a conversation into a spec (unmodified upstream; publishes to an issue tracker). |
+| `wayfinder` | Map a multi-session effort as decision tickets (unmodified upstream; requires tracker setup). |
+| `research` | Research a question from primary sources and save cited notes in the repo. |
 
 Included dependencies: `grilling`, `domain-modeling`, and `codebase-design`.
 
@@ -23,7 +26,7 @@ When installing individual skills, include the dependencies needed for your work
 | `orbit-forge` | `code-review` for final review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
 | `tdd` | None | `codebase-design` when interface design needs work |
 
-Other skills have no required skill dependencies. Keep each installed skill's supporting files.
+Other adapted skills have no required skill dependencies. Keep each installed skill's supporting files. `to-spec`, `wayfinder`, and `research` are unmodified upstream copies; `wayfinder` refers to other upstream skills such as `prototype`, which are not included here.
 
 `orbit-forge` executes an approved plan or local task set sequentially using Luna MAX / Sol HIGH and an independent Sol HIGH review. It reuses the source requirements, records execution state locally, and waits for agent events instead of repeatedly polling progress. Waiting and state-location overrides belong in `AGENTS.md`.
 
@@ -35,11 +38,11 @@ npx skills add B3r3z/My_agentic_skills
 
 Select the skills above and their dependencies for your agent. For manual Codex installation, copy each selected directory under `skills/` into `~/.codex/skills/`, keeping its supporting files and license. Do not overwrite an existing installation without reviewing local changes.
 
-In each project, invoke `$setup-b4rt-skills` to configure local task paths and documentation paths directly in `AGENTS.md`. Keep tasks in local Markdown files or provide their text in the request. Skills do not look up or configure external issue trackers. Glossaries stay in `CONTEXT.md` (or per-context files), and decisions stay in ADR files. Installing this collection does not run project setup automatically.
+In each project, invoke `$setup-b4rt-skills` to configure local task paths and documentation paths directly in `AGENTS.md`. Keep tasks in local Markdown files or provide their text in the request. The previously adapted skills do not look up or configure external issue trackers. The unmodified upstream `to-spec` and `wayfinder` still contain issue-tracker instructions, so they are not yet integrated into this local-only flow. Glossaries stay in `CONTEXT.md` (or per-context files), and decisions stay in ADR files. Installing this collection does not run project setup automatically.
 
 Suggested use: `$grill-with-docs` for design, `$to-tickets` for larger plans, `$tdd` during implementation, `$code-review` before a PR, and `$diagnosing-bugs` for difficult failures.
 
-These are adaptations of Matt Pocock's skills. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the source revision and changes; each copied skill includes its MIT license.
+Most of these are adaptations of Matt Pocock's skills; `to-spec`, `wayfinder`, and `research` are unmodified upstream copies. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source revisions and changes; each copied skill includes its MIT license.
 
 ## Instruction design
 

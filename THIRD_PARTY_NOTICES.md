@@ -12,6 +12,12 @@ The following skills are adapted from [Matt Pocock’s skills](https://github.co
 - `codebase-design`
 - `grilling`
 
+The following skills were copied from the same upstream commit without changes to `SKILL.md` or `agents/openai.yaml`:
+
+- `to-spec`
+- `wayfinder`
+- `research`
+
 Copyright (c) 2026 Matt Pocock. Distributed under the MIT License, included in each copied skill directory. This attribution does not apply to the pre-existing `orbit-forge` skill.
 
 Local changes:
