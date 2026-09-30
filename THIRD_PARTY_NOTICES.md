@@ -18,7 +18,7 @@ The following skills were copied from the same upstream commit and subsequently 
 - `wayfinder`
 - `research`
 
-Copyright (c) 2026 Matt Pocock. Distributed under the MIT License, included in each copied skill directory. This attribution does not apply to the pre-existing `orbit-forge` skill.
+Copyright (c) 2026 Matt Pocock. Distributed under the MIT License, included in each copied skill directory under both `codex/skills/` and `claude/skills/`. This attribution does not apply to the pre-existing `orbit-forge` skill.
 
 Local changes:
 
@@ -51,3 +51,11 @@ Local Markdown flow adaptation (2026-09-26):
 - `wayfinder` now keeps a local map and decision tickets separate from implementation tickets, with file-based blockers, claims, resolutions, and research links; removed external tracker, branch, and harness-specific Skill tool instructions.
 - `research` now saves a cited local note, links it to a decision ticket when applicable, and works without mandatory background delegation or an external task system.
 - Preserved existing Codex explicit-invocation policies for `to-spec` and `wayfinder`; removed their Claude-specific `disable-model-invocation` frontmatter.
+
+Agent configuration split (2026-09-30):
+
+- Moved the existing collection into `codex/skills/` without changing skill contents or supporting resources.
+- Added separate Claude Code adaptations in `claude/skills/`, preserving licenses and local Markdown workflows.
+- Replaced Codex invocation syntax and project configuration paths with Claude slash commands and `CLAUDE.md`; changed setup migration to read existing `AGENTS.md` settings where relevant.
+- Mapped existing explicit-only Codex policies to Claude's `disable-model-invocation: true`; omitted `agents/openai.yaml` from the Claude distribution.
+- Adapted the local Orbit Forge workflow to Claude Code subagents, Sonnet/Opus routing, and Claude's supported waiting behavior.

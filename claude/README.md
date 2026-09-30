@@ -1,0 +1,42 @@
+# Claude Code configuration
+
+`skills/` contains 13 Claude Code skills, with supporting references, templates, and licenses. `agents/` contains the Sonnet/Opus workers and independent Opus reviewer used by `orbit-forge`.
+
+## Install
+
+From the repository root:
+
+```sh
+python3 scripts/install.py claude --dry-run
+python3 scripts/install.py claude
+```
+
+This links the collection into `~/.claude/skills/` and its subagents into `~/.claude/agents/`. For one project, pass `--target /path/to/project/.claude`. Existing entries are never replaced. Keep this repository at the installed path or copy the skill directories and agent files instead.
+
+Start a Claude Code session and check the `/` menu for skills and `/agents` for the Orbit Forge definitions. Run `/setup-b4rt-skills` in the project to add its task and domain documentation settings to `CLAUDE.md`.
+
+## Use
+
+```text
+/grill-with-docs   Refine a design and record agreed terminology/decisions
+/wayfinder        Map decisions across sessions
+/research         Investigate a question and save cited findings
+/to-spec          Save agreed decisions as a local specification
+/to-tickets       Write local Markdown implementation tasks
+/orbit-forge      Execute an approved plan with independent review
+/tdd              Implement requested behavior test-first
+/code-review      Review code against requirements and standards
+/diagnosing-bugs  Investigate a failure
+```
+
+`grilling`, `domain-modeling`, and `codebase-design` are also available independently and as supporting skills.
+
+The six explicit-only skills are `setup-b4rt-skills`, `grill-with-docs`, `wayfinder`, `to-spec`, `to-tickets`, and `orbit-forge`. Their `disable-model-invocation: true` setting preserves the Codex collection's invocation policy. Other skills remain available for automatic selection.
+
+Project configuration belongs in `CLAUDE.md`; domain terminology stays in `CONTEXT.md`, decisions in `docs/adr/`, specifications in `docs/plan/`, and implementation tasks in `.scratch/<feature-slug>/issues/` unless configured otherwise. Planning and ticket skills retain their local-only behavior.
+
+## Compatibility
+
+This variant uses Claude's skill frontmatter rather than `agents/openai.yaml`, and `/name` rather than Codex's `$name`. Conversation-based skills run in the main session to retain the agreed context. Orbit Forge reads its installed subagent definitions; its model choices are documented there instead of using GPT model identifiers.
+
+Implementation follows the official [skill locations and invocation documentation](https://code.claude.com/docs/en/skills), [subagent configuration](https://code.claude.com/docs/en/sub-agents), and [project memory documentation](https://code.claude.com/docs/en/memory), checked on 2026-09-30.
