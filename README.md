@@ -38,7 +38,7 @@ When installing individual skills, include the dependencies needed for your work
 
 Other skills have no required skill dependencies. Keep each installed skill's supporting files. `wayfinder` can use `grilling`, `domain-modeling`, and `research` when those workflows help; it does not require an external tracker or an uninstalled `prototype` skill.
 
-The Codex `orbit-forge` uses Luna MAX / Sol HIGH and an independent Sol HIGH review. The Claude version uses Sonnet / Opus workers and an independent Opus reviewer. Both reuse source requirements and record execution state locally. Project overrides belong in `AGENTS.md` for Codex and `CLAUDE.md` for Claude Code.
+The Codex `orbit-forge` uses GPT-6.1 Sol at HIGH reasoning effort for implementation and independent review. The Claude version uses Sonnet / Opus workers and an independent Opus reviewer. Both reuse source requirements and record execution state locally. Project overrides belong in `AGENTS.md` for Codex and `CLAUDE.md` for Claude Code.
 
 ## Installation
 

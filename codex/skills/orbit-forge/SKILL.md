@@ -1,6 +1,6 @@
 ---
 name: orbit-forge
-description: Execute an approved plan or local task set sequentially with Luna MAX or Sol HIGH implementers and an independent Sol HIGH review. Use only when the user explicitly requests Orbit Forge orchestration.
+description: Execute an approved plan or local task set sequentially with GPT-6.1 Sol at HIGH reasoning effort for implementation and independent review. Use only when the user explicitly requests Orbit Forge orchestration.
 ---
 
 # Orbit Forge
@@ -19,10 +19,7 @@ Before dispatch, capture the starting state and initialize the small execution r
 
 Choose an incomplete task whose dependencies are satisfied. Within an explicitly planned integration group, a prerequisite's `implemented` state permits the next member to start; dependencies outside the group must be `complete`.
 
-Choose the implementer:
-
-- Clear, bounded work: `gpt-5.6-luna`, reasoning effort `max`.
-- Consequential design decisions, concurrency, complex algorithms, or substantial uncertainty: `gpt-5.6-sol`, reasoning effort `high`.
+Use `gpt-6.1-sol` with reasoning effort `high` for implementation tasks, including clear, bounded work and tasks with consequential design decisions, concurrency, complex algorithms, or substantial uncertainty.
 
 Pass model and effort directly to the available delegation tool, with an empty or bounded history fork and a self-contained assignment. Do not rely on named custom roles. If the required configuration is unavailable, report the blocker without silently substituting it. Reuse an existing suitable implementer for corrections or subsequent tasks when supported; preserve capacity for an independent final reviewer.
 
@@ -42,7 +39,7 @@ Root may make small mechanical integration fixes, then validate those changes. D
 
 ## 4. Review and finish
 
-After implementation, obtain a fresh read-only `gpt-5.6-sol` / `high` reviewer, independent of the implementer. Supply the source requirements, execution record, preserved baseline, final changes including WIP, and validation evidence. Use the installed `code-review` skill's scope capture and Standards/Spec criteria; have this reviewer assess both axes without spawning another reviewer layer. Its Code quality assessment must also cover correctness and regressions.
+After implementation, obtain a fresh read-only `gpt-6.1-sol` / `high` reviewer, independent of the implementer. Supply the source requirements, execution record, preserved baseline, final changes including WIP, and validation evidence. Use the installed `code-review` skill's scope capture and Standards/Spec criteria; have this reviewer assess both axes without spawning another reviewer layer. Its Code quality assessment must also cover correctness and regressions.
 
 Require evidence and a separate verdict for requirements and code quality. Root checks the validity of findings before reopening tasks. Route confirmed failures through the same implementation gate, then ask the independent reviewer to reassess the corrected scope; reuse that reviewer rather than creating a new instance for every round. Optional suggestions do not automatically fail a review.
 
