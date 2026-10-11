@@ -18,7 +18,11 @@ The following skills were copied from the same upstream commit and subsequently 
 - `wayfinder`
 - `research`
 
-Copyright (c) 2026 Matt Pocock. Distributed under the MIT License, included in each copied skill directory under both `codex/skills/` and `claude/skills/`. This attribution does not apply to the pre-existing `orbit-forge` skill.
+The following skill was copied from upstream commit `49dd158d1076134a641b33efb035946536778336` (2026-10-09) and adapted for this collection:
+
+- `implement`
+
+Copyright (c) 2026 Matt Pocock. Distributed under the MIT License, included in each copied skill directory under both `codex/skills/` and `claude/skills/`. This attribution does not apply to the pre-existing `orbit-forge` skill, whose optional exploration notes, pointer-based assignments, and parallel worktree mode were informed by upstream `implement-spec` without copying its text.
 
 Local changes:
 
@@ -59,3 +63,8 @@ Agent configuration split (2026-09-30):
 - Replaced Codex invocation syntax and project configuration paths with Claude slash commands and `CLAUDE.md`; changed setup migration to read existing `AGENTS.md` settings where relevant.
 - Mapped existing explicit-only Codex policies to Claude's `disable-model-invocation: true`; omitted `agents/openai.yaml` from the Claude distribution.
 - Adapted the local Orbit Forge workflow to Claude Code subagents, Sonnet/Opus routing, and Claude's supported waiting behavior.
+
+Implementation workflow adaptation (2026-10-11):
+
+- Added `implement` as a local-only adaptation: reads local Markdown tasks instead of fetching from an issue tracker, uses `tdd` when test-first work is requested, agreed, or required, keeps the upstream validation cadence and closing `code-review`, closes completed local tasks with status `done`, and commits only when authorized.
+- Documented the `done` task status in the local task format used by `to-tickets`.

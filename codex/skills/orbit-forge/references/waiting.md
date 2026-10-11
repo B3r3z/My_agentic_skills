@@ -8,7 +8,7 @@ Use the delegation system's blocking, event-driven wait for the assigned agent. 
 
 ## Event loop
 
-1. Dispatch work and record the agent ID and time of the last meaningful signal.
+1. Dispatch work and record the agent ID and time of the last meaningful signal. In parallel mode, dispatch up to the concurrency limit, wait on all active agents, and handle each completion as it arrives (accept, merge, dispatch newly ready tasks) while the others continue.
 2. If no independent work remains, block on the agent's wait tool. With the collaboration tools, use `wait_agent(timeout_ms=60000)`; consume its notifications/messages when it wakes. If the wait returns only a summary, fetch only the indicated result as necessary.
 3. On a timeout, wait again. Do not call list/status tools, inspect the evolving diff, read logs, or send a check-in just because a window expired. Events from other agents do not reset this task's silence clock. Routine "still working" replies may defer a check-in but are not evidence of implementation progress.
 4. On completion, collect the result and perform the acceptance gate. On a question or blocker, resolve it immediately within scope or ask the user for the missing decision. Incorporate new user input before continuing.

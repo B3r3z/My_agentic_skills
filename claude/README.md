@@ -1,6 +1,6 @@
 # Claude Code configuration
 
-`skills/` contains 13 Claude Code skills, with supporting references, templates, and licenses. `agents/` contains the Sonnet/Opus workers and independent Opus reviewer used by `orbit-forge`.
+`skills/` contains 14 Claude Code skills, with supporting references, templates, and licenses. `agents/` contains the Sonnet/Opus workers, optional Sonnet explorer, and independent Opus reviewer used by `orbit-forge`.
 
 ## Install
 
@@ -23,6 +23,7 @@ Start a Claude Code session and check the `/` menu for skills and `/agents` for 
 /research         Investigate a question and save cited findings
 /to-spec          Save agreed decisions as a local specification
 /to-tickets       Write local Markdown implementation tasks
+/implement        Build one local task in this session, review and close it
 /orbit-forge      Execute an approved plan with independent review
 /tdd              Implement requested behavior test-first
 /code-review      Review code against requirements and standards
@@ -31,12 +32,22 @@ Start a Claude Code session and check the `/` menu for skills and `/agents` for 
 
 `grilling`, `domain-modeling`, and `codebase-design` are also available independently and as supporting skills.
 
-The six explicit-only skills are `setup-b4rt-skills`, `grill-with-docs`, `wayfinder`, `to-spec`, `to-tickets`, and `orbit-forge`. Their `disable-model-invocation: true` setting preserves the Codex collection's invocation policy. Other skills remain available for automatic selection.
+The seven explicit-only skills are `setup-b4rt-skills`, `grill-with-docs`, `wayfinder`, `to-spec`, `to-tickets`, `implement`, and `orbit-forge`. Their `disable-model-invocation: true` setting preserves the Codex collection's invocation policy. Other skills remain available for automatic selection.
 
 Project configuration belongs in `CLAUDE.md`; domain terminology stays in `CONTEXT.md`, decisions in `docs/adr/`, specifications in `docs/plan/`, and implementation tasks in `.scratch/<feature-slug>/issues/` unless configured otherwise. Planning and ticket skills retain their local-only behavior.
+
+For parallel Orbit Forge runs, add `.claude/worktrees/` to `.gitignore` and enable the mode in the request or in `CLAUDE.md`, for example:
+
+```markdown
+### Orbit Forge
+
+- Parallel worktree mode: enabled, up to 3 implementers, merging into the current branch.
+```
+
+Root creates task worktrees with `git worktree add` from the working-branch tip rather than the `Agent` tool's worktree isolation, which branches from the remote default branch unless `worktree.baseRef` is `head`.
 
 ## Compatibility
 
 This variant uses Claude's skill frontmatter rather than `agents/openai.yaml`, and `/name` rather than Codex's `$name`. Conversation-based skills run in the main session to retain the agreed context. Orbit Forge reads its installed subagent definitions; its model choices are documented there instead of using GPT model identifiers.
 
-Implementation follows the official [skill locations and invocation documentation](https://code.claude.com/docs/en/skills), [subagent configuration](https://code.claude.com/docs/en/sub-agents), and [project memory documentation](https://code.claude.com/docs/en/memory), checked on 2026-09-30.
+Implementation follows the official [skill locations and invocation documentation](https://code.claude.com/docs/en/skills), [subagent configuration](https://code.claude.com/docs/en/sub-agents), and [project memory documentation](https://code.claude.com/docs/en/memory), checked on 2026-09-30, and the [worktree documentation](https://code.claude.com/docs/en/worktrees), checked on 2026-10-11.
