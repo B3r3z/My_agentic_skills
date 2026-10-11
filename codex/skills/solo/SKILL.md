@@ -13,7 +13,7 @@ Record `git status` before editing. Preserve pre-existing and unrelated work; do
 
 Use the installed `tdd` skill when test-first work is requested, agreed, or required by the task; use `diagnosing-bugs` for difficult failures. Run typechecking and the single test files you touch regularly, and the full test suite once at the end. Report checks that could not run.
 
-When done, use the installed `code-review` skill on the changes made in this session, including relevant untracked files, against the task's acceptance criteria; distinguish pre-existing changes recorded at the start. Fix confirmed findings within scope and rerun the affected checks. Optional suggestions do not block completion.
+When done, use the installed `playback` skill on the changes made in this session, including relevant untracked files, against the task's acceptance criteria; distinguish pre-existing changes recorded at the start. Fix confirmed findings within scope and rerun the affected checks. Optional suggestions do not block completion.
 
 When acceptance and both review axes pass, close each completed local task unless the user asked to leave statuses unchanged: set `**Status:** done`, check the verified acceptance criteria, and append a short `## Completion` note with the date and validation evidence. Leave partial or unreviewed tasks open with a note on what remains. Commit only when the user's task authorizes it, following repository conventions.
 

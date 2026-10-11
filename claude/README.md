@@ -26,7 +26,7 @@ Start a Claude Code session and check the `/` menu for skills and `/agents` for 
 /solo             Build one local task in this session, review and close it
 /maestro          Conduct an approved plan with independent review
 /tdd              Implement requested behavior test-first
-/code-review      Review code against requirements and standards
+/playback         Review code against the spec and standards
 /diagnosing-bugs  Investigate a failure
 ```
 

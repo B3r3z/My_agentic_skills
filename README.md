@@ -19,7 +19,7 @@ Both collections contain the same 14 skills and their supporting files. The Code
 | `grill-with-docs` | Refine a plan while recording terminology and decisions. |
 | `tdd` | Implement behavior in small test-first steps. |
 | `diagnosing-bugs` | Reproduce, investigate, and verify bug fixes. |
-| `code-review` | Review changes against requirements and coding standards. |
+| `playback` | Review changes against requirements and coding standards. |
 | `to-tickets` | Split work into local Markdown tasks with acceptance criteria and dependencies; no external tracker interaction. |
 | `to-spec` | Synthesize agreed decisions into a local spec for Markdown-ticket planning. |
 | `wayfinder` | Map a multi-session effort as local Markdown decision tickets. |
@@ -34,8 +34,8 @@ When installing individual skills, include the dependencies needed for your work
 | Skill | Required dependencies | Optional dependencies |
 | --- | --- | --- |
 | `grill-with-docs` | `grilling`; `domain-modeling` when recording docs | None |
-| `solo` | `code-review` for the closing review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
-| `maestro` | `code-review` for final review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
+| `solo` | `playback` for the closing review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
+| `maestro` | `playback` for final review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
 | `tdd` | None | `codebase-design` when interface design needs work |
 
 Other skills have no required skill dependencies. Keep each installed skill's supporting files. `wayfinder` can use `grilling`, `domain-modeling`, and `research` when those workflows help; it does not require an external tracker or an uninstalled `prototype` skill.
@@ -59,13 +59,13 @@ The installer links skills into `~/.claude/skills/` or `~/.codex/skills/`. For C
 
 For a project-only Claude installation, use `python3 scripts/install.py claude --target /path/to/project/.claude`. For a manual installation, copy the selected directories from `codex/skills/` or `claude/skills/` into the corresponding agent's skills directory, preserving supporting files and licenses. Copy `claude/agents/*.md` into the agent's `agents/` directory if using Maestro. Do not mix both variants in one skills directory.
 
-`maestro` was previously named `orbit-forge`. When upgrading an existing installation, remove the old `skills/orbit-forge` link and `agents/orbit-forge-*.md` links from the agent directory, then rerun the installer.
+`maestro` was previously named `orbit-forge`, and `playback` was `code-review` (renamed to avoid Claude Code's built-in `/code-review`). When upgrading an existing installation, remove the old `skills/orbit-forge` and `skills/code-review` links and the `agents/orbit-forge-*.md` links from the agent directory, then rerun the installer.
 
 In each project, invoke `$setup-b4rt-skills` in Codex or `/setup-b4rt-skills` in Claude Code to configure local paths in `AGENTS.md` or `CLAUDE.md`, respectively. Installing the collection does not run project setup automatically.
 
 All ticket state stays in local Markdown: `wayfinder` keeps a map and decision tickets beside the feature's implementation-ticket directory, `to-spec` writes a plan/spec file (default `docs/plan/`), and `to-tickets` writes executable tasks (default `.scratch/<feature-slug>/issues/`). `research` writes cited local notes and links them to decision tickets when relevant. `solo` and `maestro` close completed tasks by setting their status to `done` after acceptance and review pass. None of these skills reads or writes an external issue tracker. Glossaries stay in `CONTEXT.md` (or per-context files), and decisions stay in ADR files.
 
-Suggested flow: `grill-with-docs` for a design that fits one conversation; `wayfinder` when decisions span sessions; `research` for source-backed facts; `to-spec` for a durable spec; `to-tickets` for implementation tasks; `solo` for one task at a time in a fresh session; and `maestro` when orchestration is explicitly requested. Use `$name` in Codex and `/name` in Claude Code. `tdd`, `code-review`, and `diagnosing-bugs` remain available during implementation.
+Suggested flow: `grill-with-docs` for a design that fits one conversation; `wayfinder` when decisions span sessions; `research` for source-backed facts; `to-spec` for a durable spec; `to-tickets` for implementation tasks; `solo` for one task at a time in a fresh session; and `maestro` when orchestration is explicitly requested. Use `$name` in Codex and `/name` in Claude Code. `tdd`, `playback`, and `diagnosing-bugs` remain available during implementation.
 
 These are adaptations of Matt Pocock's skills, including the now local-only `to-spec`, `wayfinder`, `research`, and `solo`. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source revisions and changes; each copied skill includes its MIT license.
 

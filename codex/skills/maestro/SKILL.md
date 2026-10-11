@@ -43,7 +43,7 @@ Root may make small mechanical integration fixes, then validate those changes. D
 
 ## 4. Review and finish
 
-After implementation, obtain a fresh read-only `gpt-6.1-sol` / `high` reviewer, independent of the implementer. Supply the source requirements, execution record, preserved baseline, final changes including WIP, and validation evidence. In parallel mode, the scope is the working branch from the baseline commit to its tip, plus any uncommitted root fixes. Use the installed `code-review` skill's scope capture and Standards/Spec criteria; have this reviewer assess both axes without spawning another reviewer layer. Its Code quality assessment must also cover correctness and regressions.
+After implementation, obtain a fresh read-only `gpt-6.1-sol` / `high` reviewer, independent of the implementer. Supply the source requirements, execution record, preserved baseline, final changes including WIP, and validation evidence. In parallel mode, the scope is the working branch from the baseline commit to its tip, plus any uncommitted root fixes. Use the installed `playback` skill's scope capture and Standards/Spec criteria; have this reviewer assess both axes without spawning another reviewer layer. Its Code quality assessment must also cover correctness and regressions.
 
 Require evidence and a separate verdict for requirements and code quality. Root checks the validity of findings before reopening tasks. Route confirmed failures through the same implementation gate, then ask the independent reviewer to reassess the corrected scope; reuse that reviewer rather than creating a new instance for every round. Optional suggestions do not automatically fail a review.
 

@@ -5,7 +5,7 @@ The following skills are adapted from [Matt Pocock’s skills](https://github.co
 - `grill-with-docs`
 - `tdd`
 - `diagnosing-bugs`
-- `code-review`
+- `playback` (upstream `code-review`)
 - `to-tickets`
 - `setup-b4rt-skills`
 - `domain-modeling`
@@ -69,3 +69,4 @@ Implementation workflow adaptation (2026-10-11):
 - Added `implement` as a local-only adaptation: reads local Markdown tasks instead of fetching from an issue tracker, uses `tdd` when test-first work is requested, agreed, or required, keeps the upstream validation cadence and closing `code-review`, closes completed local tasks with status `done`, and commits only when authorized.
 - Documented the `done` task status in the local task format used by `to-tickets`.
 - Renamed the adapted `implement` skill to `solo`, and the local `orbit-forge` skill to `maestro` with `maestro-sonnet`, `maestro-opus`, `maestro-scout`, and `maestro-critic` agents.
+- Renamed the adapted `code-review` skill to `playback` to avoid colliding with Claude Code's built-in `/code-review`.
