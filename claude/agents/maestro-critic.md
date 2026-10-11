@@ -1,6 +1,6 @@
 ---
-name: orbit-forge-reviewer
-description: Independently review the completed Orbit Forge implementation against requirements and code quality after explicitly requested orchestration.
+name: maestro-critic
+description: Independently review the completed Maestro implementation against requirements and code quality after explicitly requested orchestration.
 model: opus
 effort: high
 tools: Read, Glob, Grep, LSP, Skill

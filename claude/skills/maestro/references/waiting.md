@@ -1,6 +1,6 @@
 # Waiting for Claude Code subagents
 
-Use Claude Code's foreground result or background completion notification for the assigned subagent. Settings below may be overridden by the user's request or Orbit Forge settings in `CLAUDE.md`, within host limits.
+Use Claude Code's foreground result or background completion notification for the assigned subagent. Settings below may be overridden by the user's request or Maestro settings in `CLAUDE.md`, within host limits.
 
 - Silence threshold: 5 minutes since the last meaningful task progress or status response, when the host exposes elapsed time and a message mechanism.
 - Correction limit: two consecutive rounds without measurable progress on confirmed failures.

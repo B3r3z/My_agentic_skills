@@ -1,6 +1,6 @@
 # Parallel worktree mode
 
-Use this mode only when the user's request or the Orbit Forge settings in `AGENTS.md` enable it. Settings there may override the concurrency limit (default 3 implementers), the working branch (default: the branch checked out at baseline), and the worktree root (default `.scratch/orbit-forge/<run-id>/worktrees/`).
+Use this mode only when the user's request or the Maestro settings in `AGENTS.md` enable it. Settings there may override the concurrency limit (default 3 implementers), the working branch (default: the branch checked out at baseline), and the worktree root (default `.scratch/maestro/<run-id>/worktrees/`).
 
 Root creates and removes worktrees with git directly, so every task branch starts from the working branch rather than a host default.
 
@@ -20,7 +20,7 @@ Start up to the concurrency limit from the ready frontier. Run tasks together on
 For each task, create a worktree from the current working-branch tip:
 
 ```sh
-git worktree add -b orbit-forge/<run-id>/<task-id> <worktree-root>/<task-id> <working-branch>
+git worktree add -b maestro/<run-id>/<task-id> <worktree-root>/<task-id> <working-branch>
 ```
 
 Record the path, branch, and base commit, then delegate with them in the assignment. The implementer works only inside its worktree, confirms the branch and base before editing, commits its task changes on the task branch, merges the latest working-branch tip into it, resolves conflicts within its task's scope, and reruns relevant checks before reporting. It never pushes, rebases, force-updates, or changes other branches.

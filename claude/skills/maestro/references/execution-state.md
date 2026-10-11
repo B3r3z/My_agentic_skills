@@ -2,7 +2,7 @@
 
 Requirements remain in their existing plan or tickets. Record the source path/URL and its revision or retrieval time; if the source changes during execution, reconcile the change before treating it as authorized scope. Do not duplicate or silently rewrite acceptance criteria.
 
-Keep a local execution record at the location configured in `AGENTS.md`, otherwise `.scratch/orbit-forge/<run-id>/execution.md`. Reuse it when resuming the same run; avoid overwriting unrelated runs. It is a status ledger, not a second backlog. External task status is updated only when that is authorized.
+Keep a local execution record at the location configured in `CLAUDE.md`, otherwise `.scratch/maestro/<run-id>/execution.md`. Reuse it when resuming the same run; avoid overwriting unrelated runs. It is a status ledger, not a second backlog. Keep task state in local Markdown; do not retrieve or update an external issue tracker, and do not copy the backlog into Claude's session task tools.
 
 Record only what is needed to resume and verify:
 

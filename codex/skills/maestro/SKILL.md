@@ -1,21 +1,21 @@
 ---
-name: orbit-forge
-description: Execute an approved plan or local task set, sequentially or in parallel git worktrees, with GPT-6.1 Sol at HIGH reasoning effort for implementation and independent review. Use only when the user explicitly requests Orbit Forge orchestration.
+name: maestro
+description: Conduct an approved plan or local task set, sequentially or in parallel git worktrees, with GPT-6.1 Sol at HIGH reasoning effort for implementation and independent review. Use only when the user explicitly requests Maestro orchestration.
 ---
 
-# Orbit Forge
+# Maestro
 
 Root owns dispatch, execution state, scope decisions, merges, and acceptance. By default one implementation agent works at a time; parallel worktree mode is opt-in. Reuse the approved requirements; do not repeat product discovery or rebuild an existing backlog.
 
 ## 1. Establish the execution contract
 
-Read applicable `AGENTS.md` instructions and Orbit Forge overrides. Use approved plans and local task files available in the workspace, including their IDs, dependencies, scope, and acceptance criteria. Read the linked glossary and ADRs only where relevant. Fill gaps needed for execution; ask only when an unresolved decision changes behavior or scope.
+Read applicable `AGENTS.md` instructions and Maestro overrides. Use approved plans and local task files available in the workspace, including their IDs, dependencies, scope, and acceptance criteria. Read the linked glossary and ADRs only where relevant. Fill gaps needed for execution; ask only when an unresolved decision changes behavior or scope.
 
 If the approved plan exists only in conversation, save it once at the configured plan location (default `docs/plan/`). If tickets already exist, link them without copying them into a second backlog. Split work only when it lacks bounded, verifiable tasks. Planning with `grill-with-docs` or `to-tickets` is optional upstream work, not a prerequisite to run again.
 
 Before dispatch, capture the starting state and initialize the small execution record described in [execution-state.md](references/execution-state.md). Root alone maintains this record. Commits, pushes, deployments, and other external writes require authorization in the user's task.
 
-Run sequentially unless the user's request or the Orbit Forge settings in `AGENTS.md` enable parallel worktree mode; then follow [parallel.md](references/parallel.md). Enabling it authorizes local task branches, worktrees, commits on those branches, and merges into the working branch, but not pushes or other external writes.
+Run sequentially unless the user's request or the Maestro settings in `AGENTS.md` enable parallel worktree mode; then follow [parallel.md](references/parallel.md). Enabling it authorizes local task branches, worktrees, commits on those branches, and merges into the working branch, but not pushes or other external writes.
 
 When several tasks need the same codebase or external-documentation exploration, optionally delegate one exploration agent (`gpt-6.1-sol` / `high`) before dispatch. It reads code and documentation, writes concise notes only in the run's notes directory, and changes nothing else. Link the notes from the execution record and point implementers to them instead of repeating the exploration. Notes are context, not requirements: where they conflict with the source, the source wins.
 

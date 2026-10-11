@@ -1,6 +1,6 @@
 # Waiting for delegated work
 
-Use the delegation system's blocking, event-driven wait for the assigned agent. Defaults below may be overridden by the user's request or Orbit Forge settings in `AGENTS.md`, within tool limits.
+Use the delegation system's blocking, event-driven wait for the assigned agent. Defaults below may be overridden by the user's request or Maestro settings in `AGENTS.md`, within tool limits.
 
 - Wait window: 45–60 seconds (default 60). Completion, a relevant message, or new user input may wake the wait earlier.
 - Silence threshold: 5 minutes since the last meaningful task progress or status response.

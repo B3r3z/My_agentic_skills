@@ -1,6 +1,6 @@
 # Parallel worktree mode
 
-Use this mode only when the user's request or the Orbit Forge settings in `CLAUDE.md` enable it. Settings there may override the concurrency limit (default 3 implementers), the working branch (default: the branch checked out at baseline), and the worktree root (default `.claude/worktrees/orbit-forge-<run-id>/`).
+Use this mode only when the user's request or the Maestro settings in `CLAUDE.md` enable it. Settings there may override the concurrency limit (default 3 implementers), the working branch (default: the branch checked out at baseline), and the worktree root (default `.claude/worktrees/maestro-<run-id>/`).
 
 Root creates worktrees with git directly. Do not use the `Agent` tool's worktree isolation: Claude Code branches those from the remote default branch unless `worktree.baseRef` says otherwise, not from the working branch.
 
@@ -20,7 +20,7 @@ Start up to the concurrency limit from the ready frontier. Run tasks together on
 For each task, create a worktree from the current working-branch tip:
 
 ```sh
-git worktree add -b orbit-forge/<run-id>/<task-id> <worktree-root>/<task-id> <working-branch>
+git worktree add -b maestro/<run-id>/<task-id> <worktree-root>/<task-id> <working-branch>
 ```
 
 Record the path, branch, and base commit, then start the implementer in the background with them in its assignment. The implementer works only inside its worktree, commits on the task branch, and merges the latest working-branch tip into it before reporting.

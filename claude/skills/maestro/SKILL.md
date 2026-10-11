@@ -1,24 +1,24 @@
 ---
-name: orbit-forge
-description: Execute an approved plan or local task set with Sonnet or Opus implementers, sequentially or in parallel git worktrees, and an independent Opus review. Use only when the user explicitly requests Orbit Forge orchestration.
+name: maestro
+description: Conduct an approved plan or local task set with Sonnet or Opus implementers, sequentially or in parallel git worktrees, and an independent Opus critic. Use only when the user explicitly requests Maestro orchestration.
 disable-model-invocation: true
 ---
 
-# Orbit Forge
+# Maestro
 
 Root owns dispatch, execution state, scope decisions, merges, and acceptance. By default one implementation agent works at a time; parallel worktree mode is opt-in. Reuse the approved requirements; do not repeat product discovery or rebuild an existing backlog.
 
 ## 1. Establish the execution contract
 
-Read applicable `CLAUDE.md` instructions and Orbit Forge overrides. Use approved plans and local task files available in the workspace, including their IDs, dependencies, scope, and acceptance criteria. Read the linked glossary and ADRs only where relevant. Fill gaps needed for execution; ask only when an unresolved decision changes behavior or scope.
+Read applicable `CLAUDE.md` instructions and Maestro overrides. Use approved plans and local task files available in the workspace, including their IDs, dependencies, scope, and acceptance criteria. Read the linked glossary and ADRs only where relevant. Fill gaps needed for execution; ask only when an unresolved decision changes behavior or scope.
 
 If the approved plan exists only in conversation, save it once at the configured plan location (default `docs/plan/`). If tickets already exist, link them without copying them into a second backlog. Split work only when it lacks bounded, verifiable tasks. Planning with `grill-with-docs` or `to-tickets` is optional upstream work, not a prerequisite to run again.
 
 Before dispatch, capture the starting state and initialize the small execution record described in [execution-state.md](references/execution-state.md). Root alone maintains this record. Source tickets and execution state stay in local Markdown; Claude's session task tools do not replace them. Commits, pushes, deployments, and other external writes require authorization in the user's task. Do not retrieve or update an external issue tracker.
 
-Run sequentially unless the user's request or the Orbit Forge settings in `CLAUDE.md` enable parallel worktree mode; then follow [parallel.md](references/parallel.md). Enabling it authorizes local task branches, worktrees, commits on those branches, and merges into the working branch, but not pushes or other external writes.
+Run sequentially unless the user's request or the Maestro settings in `CLAUDE.md` enable parallel worktree mode; then follow [parallel.md](references/parallel.md). Enabling it authorizes local task branches, worktrees, commits on those branches, and merges into the working branch, but not pushes or other external writes.
 
-When several tasks need the same codebase or external-documentation exploration, optionally start one `orbit-forge-explorer` subagent before dispatch. It saves concise notes in the run's notes directory; link them from the execution record and point implementers to them instead of repeating the exploration. Notes are context, not requirements: where they conflict with the source, the source wins.
+When several tasks need the same codebase or external-documentation exploration, optionally start one `maestro-scout` subagent before dispatch. It saves concise notes in the run's notes directory; link them from the execution record and point implementers to them instead of repeating the exploration. Notes are context, not requirements: where they conflict with the source, the source wins.
 
 ## 2. Dispatch a ready task
 
@@ -26,10 +26,10 @@ Choose an incomplete task whose dependencies are satisfied. Within an explicitly
 
 Choose the implementer:
 
-- Clear, bounded work: `orbit-forge-sonnet`, configured with `model: sonnet` and `effort: high`.
-- Consequential design decisions, concurrency, complex algorithms, or substantial uncertainty: `orbit-forge-opus`, configured with `model: opus` and `effort: high`.
+- Clear, bounded work: `maestro-sonnet`, configured with `model: sonnet` and `effort: high`.
+- Consequential design decisions, concurrency, complex algorithms, or substantial uncertainty: `maestro-opus`, configured with `model: opus` and `effort: high`.
 
-These agent definitions, with `orbit-forge-explorer` and `orbit-forge-reviewer`, ship in this collection's `claude/agents/` and must be installed in `~/.claude/agents/` or the project's `.claude/agents/`. Use Claude Code's `Agent` tool with the selected custom agent type. The definitions set model and effort; do not send Codex reasoning or history-fork parameters. Start a regular subagent with fresh context rather than a conversation fork. Do not enable agent teams or change session permission settings; create worktrees only in parallel mode. If a required definition or configuration is unavailable or Claude Code reports model substitution, report the actual configuration and blocker instead of silently accepting the change. Reuse a suitable existing implementer for corrections using the available resume mechanism; preserve capacity for an independent final reviewer.
+These agent definitions, with `maestro-scout` and `maestro-critic`, ship in this collection's `claude/agents/` and must be installed in `~/.claude/agents/` or the project's `.claude/agents/`. Use Claude Code's `Agent` tool with the selected custom agent type. The definitions set model and effort; do not send Codex reasoning or history-fork parameters. Start a regular subagent with fresh context rather than a conversation fork. Do not enable agent teams or change session permission settings; create worktrees only in parallel mode. If a required definition or configuration is unavailable or Claude Code reports model substitution, report the actual configuration and blocker instead of silently accepting the change. Reuse a suitable existing implementer for corrections using the available resume mechanism; preserve capacity for an independent final reviewer.
 
 A fresh subagent lacks the conversation, so its assignment must stand alone, built from context pointers rather than copies: paths to the source task, saved plan, relevant notes, glossary or ADRs, and relevant commits, plus owned paths, validation expectations, and any decision not yet written down. Do not paste content available through a pointer. Ask for a concise report of changed paths, acceptance evidence, and blockers. Preserve all pre-existing and unrelated work. The implementer may change assigned code, tests, and implementation documentation, but not the source requirements or execution record.
 
@@ -47,7 +47,7 @@ Root may make small mechanical integration fixes, then validate those changes. D
 
 ## 4. Review and finish
 
-After implementation, start a fresh `orbit-forge-reviewer` subagent, configured with `model: opus` and `effort: high`, independent of the implementer. Root captures the final review scope using the installed `code-review` skill's [scope rules](../code-review/references/scope.md), including WIP and relevant untracked files, and supplies readable patches/status evidence alongside the source requirements, execution record, preserved baseline, final files, and validation evidence. In parallel mode, the scope is the working branch from the baseline commit to its tip, plus any uncommitted root fixes. The reviewer has only read/search/skill tools, so root supplies any required git or validation output. Its preloaded `code-review` skill assesses Standards and Spec without another reviewer layer. Standards must also cover correctness and regressions.
+After implementation, start a fresh `maestro-critic` subagent, configured with `model: opus` and `effort: high`, independent of the implementer. Root captures the final review scope using the installed `code-review` skill's [scope rules](../code-review/references/scope.md), including WIP and relevant untracked files, and supplies readable patches/status evidence alongside the source requirements, execution record, preserved baseline, final files, and validation evidence. In parallel mode, the scope is the working branch from the baseline commit to its tip, plus any uncommitted root fixes. The reviewer has only read/search/skill tools, so root supplies any required git or validation output. Its preloaded `code-review` skill assesses Standards and Spec without another reviewer layer. Standards must also cover correctness and regressions.
 
 Require evidence and a separate verdict for requirements and code quality. Root checks the validity of findings before reopening tasks. Route confirmed failures through the same implementation gate, then ask the independent reviewer to reassess the corrected scope; reuse that reviewer rather than creating a new instance for every round. Optional suggestions do not automatically fail a review.
 

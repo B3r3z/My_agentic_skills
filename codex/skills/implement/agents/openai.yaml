@@ -1,7 +1,0 @@
-interface:
-  display_name: "Implement"
-  short_description: "Build one local task or spec in this session"
-  default_prompt: "Use $implement to build this local task, review it, and close it when it passes."
-
-policy:
-  allow_implicit_invocation: false

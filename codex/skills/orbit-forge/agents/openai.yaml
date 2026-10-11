@@ -1,7 +1,0 @@
-interface:
-  display_name: "Orbit Forge"
-  short_description: "Sequential or parallel-worktree execution with review"
-  default_prompt: "Use $orbit-forge to execute this approved plan or ticket set sequentially, wait for agent results, and obtain an independent final review."
-
-policy:
-  allow_implicit_invocation: false

@@ -20,9 +20,9 @@ The following skills were copied from the same upstream commit and subsequently 
 
 The following skill was copied from upstream commit `49dd158d1076134a641b33efb035946536778336` (2026-10-09) and adapted for this collection:
 
-- `implement`
+- `solo` (upstream `implement`)
 
-Copyright (c) 2026 Matt Pocock. Distributed under the MIT License, included in each copied skill directory under both `codex/skills/` and `claude/skills/`. This attribution does not apply to the pre-existing `orbit-forge` skill, whose optional exploration notes, pointer-based assignments, and parallel worktree mode were informed by upstream `implement-spec` without copying its text.
+Copyright (c) 2026 Matt Pocock. Distributed under the MIT License, included in each copied skill directory under both `codex/skills/` and `claude/skills/`. This attribution does not apply to the pre-existing `maestro` skill (formerly `orbit-forge`), whose optional exploration notes, pointer-based assignments, and parallel worktree mode were informed by upstream `implement-spec` without copying its text.
 
 Local changes:
 
@@ -68,3 +68,4 @@ Implementation workflow adaptation (2026-10-11):
 
 - Added `implement` as a local-only adaptation: reads local Markdown tasks instead of fetching from an issue tracker, uses `tdd` when test-first work is requested, agreed, or required, keeps the upstream validation cadence and closing `code-review`, closes completed local tasks with status `done`, and commits only when authorized.
 - Documented the `done` task status in the local task format used by `to-tickets`.
+- Renamed the adapted `implement` skill to `solo`, and the local `orbit-forge` skill to `maestro` with `maestro-sonnet`, `maestro-opus`, `maestro-scout`, and `maestro-critic` agents.

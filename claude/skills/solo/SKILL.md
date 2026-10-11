@@ -1,10 +1,10 @@
 ---
-name: implement
-description: "Implement one bounded local task, spec, or small task set directly in this session, review it, and close completed local tasks. Use only when explicitly invoked; use orbit-forge for orchestrated multi-task runs."
+name: solo
+description: "Implement one bounded local task, spec, or small task set solo in this session, without subagents, then review it and close completed local tasks. Use only when explicitly invoked; use maestro for orchestrated multi-task runs."
 disable-model-invocation: true
 ---
 
-# Implement
+# Solo
 
 Implement the work the user describes, or the local spec or Markdown tasks they point to, directly in this session without subagent orchestration. Read applicable `CLAUDE.md` instructions; consult the relevant glossary and ADRs only where they bear on the change.
 
@@ -18,4 +18,4 @@ When done, use the installed `code-review` skill on the changes made in this ses
 
 When acceptance and both review axes pass, close each completed local task unless the user asked to leave statuses unchanged: set `**Status:** done`, check the verified acceptance criteria, and append a short `## Completion` note with the date and validation evidence. Leave partial or unreviewed tasks open with a note on what remains. Commit only when the user's task authorizes it, following repository conventions.
 
-If the work turns out to need several dependent tasks or an independent reviewer, stop at a clean point and suggest `/orbit-forge`. End with changes made, validation, review verdicts, closed tasks, and remaining limits.
+If the work turns out to need several dependent tasks or an independent reviewer, stop at a clean point and suggest `/maestro`. End with changes made, validation, review verdicts, closed tasks, and remaining limits.
