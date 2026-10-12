@@ -7,6 +7,8 @@ codex/skills/    Existing Codex skills, including agents/openai.yaml
 claude/skills/   Claude Code adaptations with native invocation policies
 claude/agents/   Claude Code subagents used by Maestro
 scripts/        Installer for the selected agent
+tests/          Git helper regression tests in temporary repositories
+evals/          Behavioral scenarios for skill evaluation
 ```
 
 Both collections contain the same 14 skills and their supporting files. The Codex configuration is preserved. Claude Code uses `CLAUDE.md`, `/skill-name` commands, and its own subagent configuration. See [claude/README.md](claude/README.md) for the Claude workflow.
@@ -42,7 +44,9 @@ Other skills have no required skill dependencies. Keep each installed skill's su
 
 The Codex `maestro` uses GPT-6.1 Sol at HIGH reasoning effort for implementation and independent review. The Claude version uses Sonnet / Opus workers, an optional Sonnet scout, and an independent Opus critic. Both reuse source requirements, record execution state locally, pass agents pointers to tasks and shared exploration notes rather than copies, and close completed local tasks after the final review passes. Project overrides belong in `AGENTS.md` for Codex and `CLAUDE.md` for Claude Code.
 
-Maestro runs one implementer at a time by default. Parallel worktree mode is opt-in: ask for it in the request or enable it in the project's Maestro settings, optionally with a concurrency limit (default 3), working branch, and worktree root. Enabling it authorizes local task branches, commits on them, and merges into the working branch, never pushes. Root creates one worktree per ready task from the working-branch tip, runs only tasks with disjoint owned paths together, merges each accepted branch, and removes merged worktrees and branches. Unmerged or blocked work is kept and reported. The default worktree root is `.claude/worktrees/maestro-<run-id>/` for Claude Code, whose documentation recommends ignoring `.claude/worktrees/`, and `.scratch/maestro/<run-id>/worktrees/` for Codex; root adds it to `.git/info/exclude` when git does not already ignore it.
+Maestro runs one implementer at a time by default. Parallel worktree mode is opt-in: ask for it in the request or enable it in the project's Maestro settings, optionally with a concurrency limit (default 3), working branch, and worktree root. Enabling it authorizes local task branches, commits on them, and merges into the working branch, never pushes. Root creates one worktree per ready task from the working-branch tip, runs only tasks with disjoint owned paths together, merges each accepted branch, and removes merged worktrees and branches. Unmerged or blocked work is kept and reported. The default worktree root is `.claude/worktrees/maestro-<run-id>/` for Claude Code and `.scratch/maestro/<run-id>/worktrees/` for Codex. If an in-checkout root is not ignored, root adds its directory pattern to the exclude file resolved by Git, which also works from an existing linked worktree.
+
+Before parallel dispatch and each merge, Maestro's bundled read-only `scripts/check_git_state.py` checks the working branch and the entire index, and reports the absolute exclude-file path. An unrelated staged change also prevents parallel dispatch; root falls back to sequential work without changing the user's index. If the index changes after dispatch, root pauses integration and retains the task worktrees. Owned-path overlap and ignore rules are checked separately. Solo preserves the original contents of pre-existing changes for its closing review and selects validation according to user constraints, repository requirements, and affected behavior.
 
 ## Installation
 
@@ -72,3 +76,9 @@ These are adaptations of Matt Pocock's skills, including the now local-only `to-
 ## Instruction design
 
 The existing Codex instructions follow [OpenAI’s guidance on skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra): narrow discovery descriptions, outcome-focused instructions, and supporting files read only when relevant. Setup generates conditional documentation guidance rather than mandatory reading lists. Claude adaptations preserve the same workflow boundaries and explicit invocation policies using [Claude Code skills](https://code.claude.com/docs/en/skills) and [subagent configuration](https://code.claude.com/docs/en/sub-agents).
+
+## Validation
+
+Run `python3 -B -m unittest discover -s tests -v` with Python 3 and Git. These tests run both shipped Maestro helpers against temporary repositories, including staged user work, linked worktrees, and state changes between dispatch and merge; they do not alter the real checkout or agent installation. Each Maestro variant includes its helper so copying an individual skill remains supported.
+
+Use the separate [behavioral evaluation scenarios](evals/workflows.md) to assess agent decisions and outcomes. Passing helper tests does not establish that the full skill workflow passes those scenarios.

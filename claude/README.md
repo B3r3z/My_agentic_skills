@@ -36,7 +36,7 @@ The seven explicit-only skills are `setup-b4rt-skills`, `grill-with-docs`, `wayf
 
 Project configuration belongs in `CLAUDE.md`; domain terminology stays in `CONTEXT.md`, decisions in `docs/adr/`, specifications in `docs/plan/`, and implementation tasks in `.scratch/<feature-slug>/issues/` unless configured otherwise. Planning and ticket skills retain their local-only behavior.
 
-For parallel Maestro runs, add `.claude/worktrees/` to `.gitignore` and enable the mode in the request or in `CLAUDE.md`, for example:
+For parallel Maestro runs, enable the mode in the request or in `CLAUDE.md`, for example:
 
 ```markdown
 ### Maestro
@@ -45,6 +45,8 @@ For parallel Maestro runs, add `.claude/worktrees/` to `.gitignore` and enable t
 ```
 
 Root creates task worktrees with `git worktree add` from the working-branch tip rather than the `Agent` tool's worktree isolation, which branches from the remote default branch unless `worktree.baseRef` is `head`.
+
+The main checkout's entire index must be clean. Maestro checks it before dispatch and each merge with its bundled `scripts/check_git_state.py`; unrelated staged changes also block merging. Before dispatch it falls back to sequential work; after dispatch it pauses integration and keeps task worktrees. The helper also resolves Git's exclude-file path. If the worktree root is not ignored, root adds its directory pattern there without editing tracked ignore files; this works when the main checkout is itself a linked worktree.
 
 ## Compatibility
 
