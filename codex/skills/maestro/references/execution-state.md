@@ -2,28 +2,32 @@
 
 Requirements remain in their existing plan or tickets. Record the source path/URL and its revision or retrieval time; if the source changes during execution, reconcile the change before treating it as authorized scope. Do not duplicate or silently rewrite acceptance criteria.
 
-Keep a local execution record at the location configured in `AGENTS.md`, otherwise `.scratch/orbit-forge/<run-id>/execution.md`. Reuse it when resuming the same run; avoid overwriting unrelated runs. It is a status ledger, not a second backlog. External task status is updated only when that is authorized.
+Keep a local execution record at the location configured in `AGENTS.md`, otherwise `.scratch/maestro/<run-id>/execution.md`. Reuse it when resuming the same run; avoid overwriting unrelated runs. It is a status ledger, not a second backlog. External task status is updated only when that is authorized.
 
 Record only what is needed to resume and verify:
 
 ```markdown
 # Execution: <goal>
 Source: <approved plan or local task files and revision>
-Baseline: <HEAD SHA; location of private starting-state snapshot>
+Baseline: <branch and HEAD SHA; location of private starting-state snapshot>
+Mode: sequential | parallel (<limit>; working branch <name>; worktrees <root>)
+Notes: <exploration notes directory, or none>
 State: active | blocked | complete
 
-| Source task | Dependencies | Agent/model | State | Validation evidence |
-| --- | --- | --- | --- | --- |
-| <existing ID/link> | <IDs> | <agent ID and configuration> | pending | |
+| Source task | Dependencies | Agent/model | Worktree/branch | State | Validation evidence |
+| --- | --- | --- | --- | --- | --- |
+| <existing ID/link> | <IDs> | <agent ID and configuration> | <path and branch, or -> | pending | |
 
 Current blocker or next action:
 Correction rounds without progress: 0
 Review: requirements pending; code quality pending
 ```
 
+Exploration notes, when used, go in `notes/` beside the execution record, one Markdown file per topic. They hold located facts, not requirements or plans.
+
 For a conversation-only plan, first save the approved requirements once at the configured plan location, default `docs/plan/YYYY-MM-DD-<slug>.md`. Include goal, scope, acceptance criteria, and bounded tasks with dependencies and checks. Then link to it from the execution record. Existing local task sets need no new plan file.
 
-Task states are `pending`, `active`, `implemented`, `blocked`, and `complete`. Use `implemented` only for a member of a planned integration group whose individual checks passed and whose shared verification is still pending. Link the group's source definition, member IDs, and shared checks; record their results when available. This state permits continuation within the group, not completion or dependent work outside it. Preserve source task statuses unless updating them is authorized.
+Task states are `pending`, `active`, `implemented`, `blocked`, and `complete`. Use `implemented` only for a member of a planned integration group whose individual checks passed and whose shared verification is still pending. Link the group's source definition, member IDs, and shared checks; record their results when available. This state permits continuation within the group, not completion or dependent work outside it. Do not change source task statuses during execution; root closes completed tasks only after the final review passes, as described in the skill.
 
 ## Preserve the dirty baseline
 

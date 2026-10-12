@@ -1,9 +1,9 @@
 ---
-name: code-review
-description: "Review changes, selected files, or a repository against standards and requirements. Use for review requests, not implementation."
+name: playback
+description: "Code review of changes, selected files, or a repository on two axes: Spec (requirements) and Standards (conventions, correctness). Use for review requests, not implementation."
 ---
 
-# Code Review
+# Playback
 
 Review is read-only unless fixes are requested. Report two separate assessments: **Standards** and **Spec**. Cover correctness and regressions as well as documented conventions; distinguish actionable defects from design preferences.
 

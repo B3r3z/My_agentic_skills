@@ -12,7 +12,7 @@ One file per task: `<NN>-<slug>.md` in the configured directory. Start at `01` o
 - [ ] Verifiable acceptance criterion
 ```
 
-Keep existing statuses on revision unless the changed requirements justify an explicit transition. `ready-for-agent` means specified; execution also requires every blocker to be complete, except for the explicit integration-group rule below. Record follow-up notes locally when requested.
+Keep existing statuses on revision unless the changed requirements justify an explicit transition. `ready-for-agent` means specified; execution also requires every blocker to be complete (`done`), except for the explicit integration-group rule below. `solo` and `maestro` close a task only after its acceptance criteria and review pass: they set `**Status:** done`, check the verified criteria, and append a short `## Completion` note. Record follow-up notes locally when requested.
 
 Prefer durable behavior and contracts over speculative file lists. Include a concrete path, schema, or short prototype extract when it expresses an actual constraint more precisely.
 

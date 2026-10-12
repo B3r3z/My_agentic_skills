@@ -1,0 +1,7 @@
+interface:
+  display_name: "Maestro"
+  short_description: "Conduct sequential or parallel-worktree runs with review"
+  default_prompt: "Use $maestro to execute this approved plan or ticket set sequentially, wait for agent results, and obtain an independent final review."
+
+policy:
+  allow_implicit_invocation: false
