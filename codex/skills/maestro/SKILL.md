@@ -43,11 +43,11 @@ Root may make small mechanical integration fixes, then validate those changes. D
 
 ## 4. Review and finish
 
-After implementation, obtain a fresh read-only `gpt-6.1-sol` / `high` reviewer, independent of the implementer. Supply the source requirements, execution record, preserved baseline, final changes including WIP, and validation evidence. In parallel mode, the scope is the working branch from the baseline commit to its tip, plus any uncommitted root fixes. Use the installed `playback` skill's scope capture and Standards/Spec criteria; have this reviewer assess both axes without spawning another reviewer layer. Its Code quality assessment must also cover correctness and regressions.
+After implementation, use the delegation tool to spawn a fresh read-only `gpt-6.1-sol` / `high` reviewer subagent, independent of the implementer. Explicitly instruct it to read and apply the installed [playback skill](../playback/SKILL.md), including its scope capture, and assess both Standards and Spec itself without spawning further reviewers. Supply the source requirements, execution record, preserved baseline, final changes including WIP and relevant untracked files, and validation evidence. In parallel mode, the scope is the working branch from the baseline commit to its tip, plus any uncommitted root fixes. Standards must also cover correctness and regressions. Root does not perform the closing Playback review itself.
 
 Require evidence and a separate verdict for requirements and code quality. Root checks the validity of findings before reopening tasks. Route confirmed failures through the same implementation gate, then ask the independent reviewer to reassess the corrected scope; reuse that reviewer rather than creating a new instance for every round. Optional suggestions do not automatically fail a review.
 
-After the configured no-progress limit (default two correction rounds on confirmed failures), stop the loop and report the blocker and open items. Missing reviewer capacity leaves review pending, never passed.
+After the configured no-progress limit (default two correction rounds on confirmed failures), stop the loop and report the blocker and open items. Unavailable delegation, reviewer capacity, or `playback` leaves review pending, never passed.
 
 When acceptance and both review axes pass, close each completed local source task unless the user asked to leave statuses unchanged: set its status to `done`, check the verified acceptance criteria, and append a short `## Completion` note linking the execution record and, in parallel mode, the merge commit. Leave blocked, partial, or unreviewed tasks open with a note on what remains. In parallel mode, finish the worktree cleanup.
 

@@ -11,7 +11,7 @@ tests/          Git helper regression tests in temporary repositories
 evals/          Behavioral scenarios for skill evaluation
 ```
 
-Both collections contain the same 14 skills and their supporting files. The Codex configuration is preserved. Claude Code uses `CLAUDE.md`, `/skill-name` commands, and its own subagent configuration. See [claude/README.md](claude/README.md) for the Claude workflow.
+Both collections contain the same 15 skills and their supporting files. The Codex configuration is preserved. Claude Code uses `CLAUDE.md`, `/skill-name` commands, and its own subagent configuration. See [claude/README.md](claude/README.md) for the Claude workflow.
 
 ## Selected engineering skills
 
@@ -21,12 +21,13 @@ Both collections contain the same 14 skills and their supporting files. The Code
 | `grill-with-docs` | Refine a plan while recording terminology and decisions. |
 | `tdd` | Implement behavior in small test-first steps. |
 | `diagnosing-bugs` | Reproduce, investigate, and verify bug fixes. |
+| `code-coach` | Understand code and review comments through grounded explanations and critical discussion of assumptions and tradeoffs. |
 | `playback` | Review changes against requirements and coding standards. |
 | `to-tickets` | Split work into local Markdown tasks with acceptance criteria and dependencies; no external tracker interaction. |
 | `to-spec` | Synthesize agreed decisions into a local spec for Markdown-ticket planning. |
 | `wayfinder` | Map a multi-session effort as local Markdown decision tickets. |
 | `research` | Save cited primary-source findings as local Markdown notes linked to decisions when relevant. |
-| `solo` | Build one local task or small spec in the current session, review it, and close completed tasks. |
+| `solo` | Build one local task or small spec in the current session, obtain an independent Playback subagent review, and close completed tasks. |
 | `maestro` | Execute an approved local plan sequentially or in parallel git worktrees, obtain an independent review, and close completed tasks. |
 
 Included dependencies: `grilling`, `domain-modeling`, and `codebase-design`.
@@ -43,6 +44,8 @@ When installing individual skills, include the dependencies needed for your work
 Other skills have no required skill dependencies. Keep each installed skill's supporting files. `wayfinder` can use `grilling`, `domain-modeling`, and `research` when those workflows help; it does not require an external tracker or an uninstalled `prototype` skill.
 
 The Codex `maestro` uses GPT-6.1 Sol at HIGH reasoning effort for implementation and independent review. The Claude version uses Sonnet / Opus workers, an optional Sonnet scout, and an independent Opus critic. Both reuse source requirements, record execution state locally, pass agents pointers to tasks and shared exploration notes rather than copies, and close completed local tasks after the final review passes. Project overrides belong in `AGENTS.md` for Codex and `CLAUDE.md` for Claude Code.
+
+Both `solo` and `maestro` delegate the closing review to one fresh read-only subagent that applies `playback` and returns separate Standards and Spec verdicts. Solo keeps implementation in the current session. If delegation or Playback is unavailable, review remains pending and tasks stay open.
 
 Maestro runs one implementer at a time by default. Parallel worktree mode is opt-in: ask for it in the request or enable it in the project's Maestro settings, optionally with a concurrency limit (default 3), working branch, and worktree root. Enabling it authorizes local task branches, commits on them, and merges into the working branch, never pushes. Root creates one worktree per ready task from the working-branch tip, runs only tasks with disjoint owned paths together, merges each accepted branch, and removes merged worktrees and branches. Unmerged or blocked work is kept and reported. The default worktree root is `.claude/worktrees/maestro-<run-id>/` for Claude Code and `.scratch/maestro/<run-id>/worktrees/` for Codex. If an in-checkout root is not ignored, root adds its directory pattern to the exclude file resolved by Git, which also works from an existing linked worktree.
 
@@ -71,7 +74,9 @@ All ticket state stays in local Markdown: `wayfinder` keeps a map and decision t
 
 Suggested flow: `grill-with-docs` for a design that fits one conversation; `wayfinder` when decisions span sessions; `research` for source-backed facts; `to-spec` for a durable spec; `to-tickets` for implementation tasks; `solo` for one task at a time in a fresh session; and `maestro` when orchestration is explicitly requested. Use `$name` in Codex and `/name` in Claude Code. `tdd`, `playback`, and `diagnosing-bugs` remain available during implementation.
 
-These are adaptations of Matt Pocock's skills, including the now local-only `to-spec`, `wayfinder`, `research`, and `solo`. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source revisions and changes; each copied skill includes its MIT license.
+For learning, invoke `$code-coach` in Codex or `/code-coach` in Claude Code with a code fragment, symbol, or review comment. It explains the selected material and challenges reasoning with relevant counterexamples, assumptions, and tradeoffs. It checks comments against implementation. Learning questions are selective and must require a new inference; there is no routine quiz or recall check after an explanation. A request to understand code does not authorize repository edits.
+
+The collection includes adaptations of Matt Pocock's skills, including the now local-only `to-spec`, `wayfinder`, `research`, and `solo`, alongside original skills such as `code-coach`. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source revisions and changes; each copied skill includes its MIT license.
 
 ## Instruction design
 
@@ -82,3 +87,5 @@ The existing Codex instructions follow [OpenAI’s guidance on skills and prompt
 Run `python3 -B -m unittest discover -s tests -v` with Python 3 and Git. These tests run both shipped Maestro helpers against temporary repositories, including staged user work, linked worktrees, and state changes between dispatch and merge; they do not alter the real checkout or agent installation. Each Maestro variant includes its helper so copying an individual skill remains supported.
 
 Use the separate [behavioral evaluation scenarios](evals/workflows.md) to assess agent decisions and outcomes. Passing helper tests does not establish that the full skill workflow passes those scenarios.
+
+The [Code Coach scenarios](evals/code-coach.md) cover explanation quality, question relevance, feedback, misleading comments, user control, and skill selection. They require conversational evaluation; structural checks alone do not establish a pass.

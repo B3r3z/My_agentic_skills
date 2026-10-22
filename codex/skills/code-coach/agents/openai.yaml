@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Coach"
+  short_description: "Understand code, assumptions, and tradeoffs"
+  default_prompt: "Use $code-coach to explain this code or review comment and examine the assumptions and tradeoffs that matter here."

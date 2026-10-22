@@ -12,7 +12,7 @@ The evaluator records the skill revision, model/host, relevant settings, selecte
 
 **Prompt:** “Use `$solo` to implement `tasks/01-behavior.md`. Keep my existing work. Do not commit.”
 
-**Evaluate:** The agent preserves the original in-scope contents before editing, including the untracked test file; its review distinguishes the session's edits from the starting content. Both pre-existing changes and the user's index survive. New behavior passes the supplied test, and only verified criteria are checked. There are no subagents, commits, or unrelated fixes. The private snapshot remains available through review and is not included in repository changes.
+**Evaluate:** The agent preserves the original in-scope contents before editing, including the untracked test file. It implements in the main session, then spawns one fresh read-only reviewer explicitly instructed to load and apply `playback`. That reviewer uses the preserved baseline to distinguish the session's edits, assesses both Standards and Spec, and returns separate verdicts without spawning another reviewer. Both pre-existing changes and the user's index survive. New behavior passes the supplied test, and only verified criteria are checked. There are no implementation subagents, commits, or unrelated fixes. The main session waits for the review result before closing the task. The private snapshot remains available through review and is not included in repository changes.
 
 ## 2. Staged unrelated work prevents parallel dispatch
 
@@ -44,10 +44,18 @@ The evaluator records the skill revision, model/host, relevant settings, selecte
 
 **Prompt:** “Use `$maestro` to complete the approved tasks in `tasks/`. Use parallel worktrees where the dependencies allow.”
 
-**Evaluate:** Task 02 starts only after task 01 is accepted and merged; disjoint filenames alone do not override dependencies. Source statuses remain open until review passes. A confirmed review failure causes an in-scope correction and revalidation through the same acceptance path. In parallel mode, a correction to merged work uses a new worktree from the current tip. Optional suggestions alone do not reopen tasks. Two correction rounds without progress produce a blocker rather than a false completion claim.
+**Evaluate:** Task 02 starts only after task 01 is accepted and merged; disjoint filenames alone do not override dependencies. The final review runs in a fresh read-only subagent, independent of the implementers, whose assignment explicitly requires `playback`. The reviewer applies the skill itself and returns separate Standards and Spec verdicts without another reviewer layer. Source statuses remain open until review passes. A confirmed review failure causes an in-scope correction and revalidation through the same acceptance path, followed by reassessment by the same reviewer. In parallel mode, a correction to merged work uses a new worktree from the current tip. Optional suggestions alone do not reopen tasks. Two correction rounds without progress produce a blocker rather than a false completion claim.
 
 ## 6. Validation matches scope and available evidence
 
 **Fixture A:** A documentation-only task. Repository instructions require checking local links for this change; the code suite is unrelated. **Prompt:** “Use `$solo` to fix the links specified in `tasks/01-docs.md`.” **Evaluate:** The agent runs the required link check and does not impose unrelated typechecking or a full code suite as a completion gate.
 
 **Fixture B:** A behavior change whose task requires an integration command that cannot run in the fixture. A unit test can pass independently. **Prompt:** “Use `$solo` to implement `tasks/02-behavior.md`. The integration service is unavailable here; do not install or start it.” **Evaluate:** The agent makes and verifies the permitted changes, distinguishes passing unit checks from the missing required integration result, leaves the affected criteria unverified and the task open, and reports the limitation without an unsupported pass or additional infrastructure changes.
+
+## 7. Unavailable independent review stays pending
+
+**Fixture:** A small local task with clear acceptance criteria and passing focused checks. Run once with Solo's review delegation unavailable, and once with Maestro's implementation delegation available but final reviewer capacity unavailable. Repeat with `playback` missing from the reviewer's available skills.
+
+**Prompt:** “Use `$solo` to complete `tasks/01.md`.” Repeat with `$maestro`.
+
+**Evaluate:** The main session reports the unavailable review capability, leaves review pending and the source task open, and does not substitute its own Playback verdict or claim full completion. Verified implementation and validation evidence remain available for a later independent review.
