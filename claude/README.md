@@ -1,6 +1,6 @@
 # Claude Code configuration
 
-`skills/` contains 14 Claude Code skills, with supporting references, templates, and licenses. `agents/` contains the `maestro` subagents: `maestro-sonnet` and `maestro-opus` implementers, the optional `maestro-scout` explorer, and the independent `maestro-critic` reviewer.
+`skills/` contains 15 Claude Code skills, with supporting references, templates, and licenses. `agents/` contains the `maestro` subagents: `maestro-sonnet` and `maestro-opus` implementers, the optional `maestro-scout` explorer, and the independent `maestro-critic` reviewer.
 
 ## Install
 
@@ -23,14 +23,17 @@ Start a Claude Code session and check the `/` menu for skills and `/agents` for 
 /research         Investigate a question and save cited findings
 /to-spec          Save agreed decisions as a local specification
 /to-tickets       Write local Markdown implementation tasks
-/solo             Build one local task in this session, review and close it
+/solo             Build locally, obtain a Playback subagent review, and close
 /maestro          Conduct an approved plan with independent review
 /tdd              Implement requested behavior test-first
 /playback         Review code against the spec and standards
 /diagnosing-bugs  Investigate a failure
+/code-coach       Understand code, assumptions, and tradeoffs through discussion
 ```
 
 `grilling`, `domain-modeling`, and `codebase-design` are also available independently and as supporting skills.
+
+Solo uses a fresh read-only reviewer through `Agent`, explicitly instructed to load `playback`. Maestro uses `maestro-critic`, which preloads `playback`. Each reviewer assesses both Standards and Spec; the main session waits for its verdicts before closing tasks.
 
 The seven explicit-only skills are `setup-b4rt-skills`, `grill-with-docs`, `wayfinder`, `to-spec`, `to-tickets`, `solo`, and `maestro`. Their `disable-model-invocation: true` setting preserves the Codex collection's invocation policy. Other skills remain available for automatic selection.
 
