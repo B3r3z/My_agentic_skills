@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simple English"
+  short_description: "Write and review technical text in plain English"
+  default_prompt: "Use $simple-english to rewrite this text for someone new to the topic."

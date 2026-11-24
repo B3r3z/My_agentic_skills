@@ -1,0 +1,4 @@
+interface:
+  display_name: "OKR Summary"
+  short_description: "Draft a quarterly OKR comment from GitHub evidence"
+  default_prompt: "Use $okr-summary to draft a quarterly summary for this GitHub OKR."

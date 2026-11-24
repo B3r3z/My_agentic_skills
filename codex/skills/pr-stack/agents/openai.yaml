@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Stack"
+  short_description: "Assess review boundaries before splitting local work"
+  default_prompt: "Use $pr-stack to assess whether my diff has logically non-overlapping review layers; recommend one PR if it does not, otherwise agree the split before preparing local branches and the manual publication command."

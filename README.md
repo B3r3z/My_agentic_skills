@@ -11,7 +11,7 @@ tests/          Git helper regression tests in temporary repositories
 evals/          Behavioral scenarios for skill evaluation
 ```
 
-Both collections contain the same 15 skills and their supporting files. The Codex configuration is preserved. Claude Code uses `CLAUDE.md`, `/skill-name` commands, and its own subagent configuration. See [claude/README.md](claude/README.md) for the Claude workflow.
+Both collections share 16 skills and their supporting files. Codex also includes `pr-stack` and `okr-summary`. The Codex configuration is preserved. Claude Code uses `CLAUDE.md`, `/skill-name` commands, and its own subagent configuration. See [claude/README.md](claude/README.md) for the Claude workflow.
 
 ## Selected engineering skills
 
@@ -22,6 +22,7 @@ Both collections contain the same 15 skills and their supporting files. The Code
 | `tdd` | Implement behavior in small test-first steps. |
 | `diagnosing-bugs` | Reproduce, investigate, and verify bug fixes. |
 | `code-coach` | Understand code and review comments through grounded explanations and critical discussion of assumptions and tradeoffs. |
+| [`simple-english`](codex/skills/simple-english/SKILL.md) | Write or review technical text in plain English. Apply ASD-STE100 when requested. |
 | `playback` | Review changes against requirements and coding standards. |
 | `to-tickets` | Split work into local Markdown tasks with acceptance criteria and dependencies; no external tracker interaction. |
 | `to-spec` | Synthesize agreed decisions into a local spec for Markdown-ticket planning. |
@@ -29,6 +30,8 @@ Both collections contain the same 15 skills and their supporting files. The Code
 | `research` | Save cited primary-source findings as local Markdown notes linked to decisions when relevant. |
 | `solo` | Build one local task or small spec in the current session, obtain an independent Playback subagent review, and close completed tasks. |
 | `maestro` | Execute an approved local plan sequentially or in parallel git worktrees, obtain an independent review, and close completed tasks. |
+| `pr-stack` (Codex) | Assess whether a diff has logically separate review layers; recommend one PR when it does not, otherwise agree and build local branches and hand publication to the user. |
+| [`okr-summary`](codex/skills/okr-summary/SKILL.md) (Codex) | Read a GitHub OKR, its child issues and their comments, then draft a quarterly summary for leadership as copyable Markdown in chat. |
 
 Included dependencies: `grilling`, `domain-modeling`, and `codebase-design`.
 
@@ -70,6 +73,8 @@ For a project-only Claude installation, use `python3 scripts/install.py claude -
 
 In each project, invoke `$setup-b4rt-skills` in Codex or `/setup-b4rt-skills` in Claude Code to configure local paths in `AGENTS.md` or `CLAUDE.md`, respectively. Installing the collection does not run project setup automatically.
 
+Invoke `$pr-stack` in Codex to assess existing changes for review. A read-only scout recommends one PR when the changes cannot be split into logically separate layers. It keeps coupled implementation, contract, and test changes together instead of inventing temporary versions for successive PRs. For a viable stack, the main session agrees the split and branch names with you before creating local branches and commits in a separate worktree. It preserves your source checkout and staging. It never pushes or creates PRs: it gives you the command to register the prepared branches with [gh-stack](https://github.com/github/gh-stack) and publish them yourself. Git, an available subagent tool, and the gh-stack CLI are required for the full stack workflow; tool installation is separate.
+
 All ticket state stays in local Markdown: `wayfinder` keeps a map and decision tickets beside the feature's implementation-ticket directory, `to-spec` writes a plan/spec file (default `docs/plan/`), and `to-tickets` writes executable tasks (default `.scratch/<feature-slug>/issues/`). `research` writes cited local notes and links them to decision tickets when relevant. `solo` and `maestro` close completed tasks by setting their status to `done` after acceptance and review pass. None of these skills reads or writes an external issue tracker. Glossaries stay in `CONTEXT.md` (or per-context files), and decisions stay in ADR files.
 
 Suggested flow: `grill-with-docs` for a design that fits one conversation; `wayfinder` when decisions span sessions; `research` for source-backed facts; `to-spec` for a durable spec; `to-tickets` for implementation tasks; `solo` for one task at a time in a fresh session; and `maestro` when orchestration is explicitly requested. Use `$name` in Codex and `/name` in Claude Code. `tdd`, `playback`, and `diagnosing-bugs` remain available during implementation.
@@ -89,3 +94,5 @@ Run `python3 -B -m unittest discover -s tests -v` with Python 3 and Git. These t
 Use the separate [behavioral evaluation scenarios](evals/workflows.md) to assess agent decisions and outcomes. Passing helper tests does not establish that the full skill workflow passes those scenarios.
 
 The [Code Coach scenarios](evals/code-coach.md) cover explanation quality, question relevance, feedback, misleading comments, user control, and skill selection. They require conversational evaluation; structural checks alone do not establish a pass.
+
+The [PR Stack scenarios](evals/pr-stack.md) cover delegated analysis, one-PR recommendations for coupled changes, useful shared-file boundaries, agreement before mutations, mixed diffs, source preservation, and manual publication.

@@ -1,6 +1,6 @@
 # Claude Code configuration
 
-`skills/` contains 15 Claude Code skills, with supporting references, templates, and licenses. `agents/` contains the `maestro` subagents: `maestro-sonnet` and `maestro-opus` implementers, the optional `maestro-scout` explorer, and the independent `maestro-critic` reviewer.
+`skills/` contains 16 Claude Code skills, with supporting references, templates, and licenses. `agents/` contains the `maestro` subagents: `maestro-sonnet` and `maestro-opus` implementers, the optional `maestro-scout` explorer, and the independent `maestro-critic` reviewer.
 
 ## Install
 
@@ -29,6 +29,7 @@ Start a Claude Code session and check the `/` menu for skills and `/agents` for 
 /playback         Review code against the spec and standards
 /diagnosing-bugs  Investigate a failure
 /code-coach       Understand code, assumptions, and tradeoffs through discussion
+/simple-english   Write or review technical text in plain English or requested STE
 ```
 
 `grilling`, `domain-modeling`, and `codebase-design` are also available independently and as supporting skills.

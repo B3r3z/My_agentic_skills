@@ -1,5 +1,17 @@
 # Third-party notices
 
+## Simple English adaptation
+
+The Codex and Claude Code versions of `simple-english` adapt [AminBlg/SimpleEnglish 2.1.2](https://github.com/AminBlg/SimpleEnglish/tree/300432a9e4c473229a7049ab61b8ca2522d9214c/skills/simple-english). Each skill directory includes the upstream MIT license and copyright notice. The adaptation narrows discovery, preserves uncertainty and obligation during rewrites, and uses a shorter rule index with separate guidance for checking vocabulary against the official ASD-STE100 edition.
+
+## GitHub gh-stack adaptation
+
+The Codex `pr-stack` skill is adapted from [github/gh-stack](https://github.com/github/gh-stack/tree/2a49e6751238633db504655d8a8eba3e433e827d/skills/gh-stack), commit `2a49e6751238633db504655d8a8eba3e433e827d` (inspected 2026-10-29). Copyright GitHub, Inc.; MIT License included in `codex/skills/pr-stack/LICENSE`.
+
+Local changes: renamed the skill, scoped discovery to splitting existing changes, required a read-only scout and user agreement on names/scope before local mutations, added isolated reconstruction and source-preservation checks, and replaced agent-driven remote operations with a manual gh-stack registration/publication command. The broad upstream command and troubleshooting manuals are not bundled because they include remote mutations outside this workflow.
+
+## Matt Pocock adaptations
+
 The following skills are adapted from [Matt Pocock’s skills](https://github.com/mattpocock/skills), commit `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` (2026-09-23):
 
 - `grill-with-docs`
