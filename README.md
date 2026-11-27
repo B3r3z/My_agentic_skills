@@ -31,7 +31,7 @@ Both collections share 16 skills and their supporting files. Codex also includes
 | `solo` | Build one local task or small spec in the current session, obtain an independent Playback subagent review, and close completed tasks. |
 | `maestro` | Execute an approved local plan sequentially or in parallel git worktrees, obtain an independent review, and close completed tasks. |
 | `pr-stack` (Codex) | Assess whether a diff has logically separate review layers; recommend one PR when it does not, otherwise agree and build local branches and hand publication to the user. |
-| [`okr-summary`](codex/skills/okr-summary/SKILL.md) (Codex) | Read a GitHub OKR, its child issues and their comments, then draft a quarterly summary for leadership as copyable Markdown in chat. |
+| [`okr-summary`](codex/skills/okr-summary/SKILL.md) (Codex) | Draft a quarterly leadership comment from GitHub issues and comments. For a complex closure, a read-only analyst checks the sources before the writer drafts the summary. |
 
 Included dependencies: `grilling`, `domain-modeling`, and `codebase-design`.
 
@@ -43,6 +43,7 @@ When installing individual skills, include the dependencies needed for your work
 | `solo` | `playback` for the closing review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
 | `maestro` | `playback` for final review | `tdd` for requested test-first work; `diagnosing-bugs` for difficult failures |
 | `tdd` | None | `codebase-design` when interface design needs work |
+| `okr-summary` (Codex) | `simple-english` for English comments | None |
 
 Other skills have no required skill dependencies. Keep each installed skill's supporting files. `wayfinder` can use `grilling`, `domain-modeling`, and `research` when those workflows help; it does not require an external tracker or an uninstalled `prototype` skill.
 
@@ -96,3 +97,5 @@ Use the separate [behavioral evaluation scenarios](evals/workflows.md) to assess
 The [Code Coach scenarios](evals/code-coach.md) cover explanation quality, question relevance, feedback, misleading comments, user control, and skill selection. They require conversational evaluation; structural checks alone do not establish a pass.
 
 The [PR Stack scenarios](evals/pr-stack.md) cover delegated analysis, one-PR recommendations for coupled changes, useful shared-file boundaries, agreement before mutations, mixed diffs, source preservation, and manual publication.
+
+The [OKR Summary evaluation](evals/okr-summary.md) compares drafts against a held-out leadership comment and the underlying evidence.
